@@ -46,13 +46,6 @@
 		</dependency>
 	</dependencies>
 
-<repositories>
-  <repository>
-    <id>project-local-repo</id>
-    <url>file://${basedir}/lib</url>
-  </repository>
-</repositories>
-
 	<build>
 		<plugins>
 			<!-- コンパイラを1.7バージョンで動作させるための設定 -->
