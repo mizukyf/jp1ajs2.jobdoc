@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+div.summary,
+div.unit-info
+{
+	margin-bottom: 2em;
+}
+div.unit-info
+{
+	border-top: 1px solid #000;
+}
+table,
+th,
+td
+{
+	border: 1px solid #000;
+	border-collapse: collapse;
+}
+th,
+td
+{
+	padding: 0.5ex;
+}
+</style>
+</head>
+<body>
+	<h1><span th:text="${root.name}">(root unit name)</span></h1>
+	
+	<h2>概要</h2>
+	<div class="summary">
+		<table>
+			<tbody>
+				<tr>
+					<th>コメント</th><td th:text="${root.getParams('cm')[0].value}">(comment)</td>
+				</tr>
+				<tr>
+					<th>構成要素数</th><td th:text="${flattenedList.size()} - 1">(subunit count)</td>
+				</tr>
+				<tr>
+					<th>最大の深さ</th><td th:text="${maxDepth}">(max depth)</td>
+				</tr>
+				<tr>
+					<th>最大の面積</th>
+					<td>
+						<span th:text="${maxArea.height} * ${maxArea.width}"></span>
+						（ヨコ：<span th:text="${maxArea.width}"></span> x
+						タテ：<span th:text="${maxArea.height}"></span>）
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="unit-info" th:each="unit : ${flattenedList}">
+		<h2><a name="/to/be/set" th:name="${unit.fullQualifiedName}" th:text="${unit.fullQualifiedName}">(full qualified name)</a></h2>
+		<h3>ユニット属性パラメーター</h3>
+		<table class="unit-attr-params">
+			<thead>
+				<tr>
+					<th>属性名</th><th>属性値</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ユニット名</td><td th:text="${unit.name}">(unit name)</td>
+				</tr>
+				<tr>
+					<td>許可モード</td><td th:text="${unit.permissionMode.isSome()} ? ${unit.permissionMode.get()} : '--'">(permission mode)</td>
+				</tr>
+				<tr>
+					<td>ユニット名</td><td th:text="${unit.ownerName.isSome()} ? ${unit.ownerName.get()} : '--'">(owner name)</td>
+				</tr>
+				<tr>
+					<td>ユニット名</td><td th:text="${unit.resourceGroupName.isSome()} ? ${unit.resourceGroupName.get()} : '--'">(resource group name)</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>ユニット定義パラメーター</h3>
+		<table class="unit-def-params">
+			<thead>
+				<tr><th>パラメーター名</th><th>パラメーター値</th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${unit.params}">
+					<td th:text="${p.name}">(parameter name)</td>
+					<td><span th:each="v,iterStat : ${p.values}"><span th:text="${v}">(parameter value)</span><span th:text="${iterStat.last} ? ';' : ','">;</span></span></td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>下位ユニット</h3>
+		<ul class="subunit-infos" th:unless="${unit.subUnits.isEmpty()}">
+			<li th:each="sub : ${unit.subUnits}">
+				<a href="#" target="detail" th:text="${sub.name}" th:href="'#' + ${sub.fullQualifiedName}">(subunit name)</a>
+			</li>
+		</ul>
+		<p th:if="${unit.subUnits.isEmpty()}">（下位ユニットなし）</p>
+	</div>
+</body>
+</html>
