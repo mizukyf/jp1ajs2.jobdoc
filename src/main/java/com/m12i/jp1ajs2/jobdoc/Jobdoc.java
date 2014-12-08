@@ -10,7 +10,8 @@ import org.thymeleaf.TemplateEngine;
 
 import com.m12i.jp1ajs2.jobdoc.service.Configurer;
 import com.m12i.jp1ajs2.jobdoc.service.Parser;
-import com.m12i.jp1ajs2.jobdoc.service.Renderer;
+import com.m12i.jp1ajs2.jobdoc.service.HtmlWriter;
+import com.m12i.jp1ajs2.jobdoc.service.SvgWriter;
 import com.m12i.jp1ajs2.jobdoc.service.Traverser;
 
 import usertools.jp1ajs2.unitdef.core.Unit;
@@ -55,9 +56,13 @@ public class Jobdoc {
 	 */
 	private final Traverser trav = new Traverser();
 	/**
-	 * ドキュメント化を担当するサービス・クラス.
+	 * ドキュメント化のHTML部分を担当するサービス・クラス.
 	 */
-	private final Renderer rend = new Renderer();
+	private final HtmlWriter html = new HtmlWriter();
+	/**
+	 * ドキュメント化のSVG部分を担当するサービス・クラス.
+	 */
+	private final SvgWriter svg = new SvgWriter();
 	
 	/**
 	 * アプリケーションの主処理を実行する.
@@ -82,7 +87,8 @@ public class Jobdoc {
 			logger.info("パラメータ・オブジェクト： {}", params);
 
 			logger.info("テンプレート・エンジンを初期化します.");
-			final TemplateEngine engine = rend.initializeTemplateEngine();
+			final TemplateEngine htmlEngine = html.initializeTemplateEngine();
+			final TemplateEngine svgEngine = svg.initializeTemplateEngine();
 			
 			logger.info("ユニット定義ファイルのパースを行います.");
 			final Unit root = pars.parseSourceFile(params);
@@ -97,9 +103,12 @@ public class Jobdoc {
 			
 			logger.info("ドキュメント化対象ユニット数： {}", targets.size());
 
-			for (final Map.Entry<String,Unit> u : targets.entrySet()) {
-				logger.info("ユニット{}をドキュメント化します.", u.getKey());
-				rend.renderJobdoc(u.getValue(), engine, params);
+			for (final Map.Entry<String,Unit> e : targets.entrySet()) {
+				logger.info("ユニット{}とその配下のユニットをHTMLドキュメント化します.", e.getKey());
+				html.renderHtml(e.getValue(), htmlEngine, params);
+				
+				logger.info("ユニット{}とその配下のユニットのマップをSVGドキュメント化します.", e.getKey());
+				svg.renderSvg(e.getValue(), svgEngine, params);
 			}
 			
 		} catch (final JobdocError e1) {
@@ -107,10 +116,12 @@ public class Jobdoc {
 			logger.error(Messages.APPLICATION_ERROR_HAS_OCCURED, e1);
 			e1.printStackTrace();
 			System.exit(EXIT_CODE_ERROR);
+			
 		} catch (final JobdocWarning e2) {
 			// 警告終了
 			logger.warn(Messages.APPLICATION_WARNING_HAS_OCCURED);
 			System.exit(EXIT_CODE_WARNING);
+			
 		} catch (final Exception e3) {
 			// 異常終了（想定外のエラーの場合）
 			logger.error(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e3);

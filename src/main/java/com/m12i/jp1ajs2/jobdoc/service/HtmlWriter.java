@@ -23,7 +23,7 @@ import usertools.jp1ajs2.unitdef.core.Unit;
  * ドキュメント化を担当するオブジェクト.
  * テンプレート・ファイルはクラスパス上から検索される。
  */
-public class Renderer {
+public class HtmlWriter {
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
 	 */
@@ -89,7 +89,7 @@ public class Renderer {
 	 * @param engine テンプレート・エンジン
 	 * @param params パラメータ
 	 */
-	public void renderJobdoc(final Unit target, final TemplateEngine engine, final Parameters params) {
+	public void renderHtml(final Unit target, final TemplateEngine engine, final Parameters params) {
 		// ユニット名を使ってディレクトリを作成
 		final File baseDir = new File(params.getDestinationDirectory(), target.getName());
 		baseDir.mkdir();
