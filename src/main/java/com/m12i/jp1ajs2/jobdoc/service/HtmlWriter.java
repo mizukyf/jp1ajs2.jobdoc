@@ -52,6 +52,10 @@ public class HtmlWriter {
 	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
 	 */
 	private final Traverser trav = new Traverser();
+	/**
+	 * ユニット定義パラメータ値の解説情報を提供するサービス・クラス.
+	 */
+	private final Explicator expl = new Explicator();
 	
 	/**
 	 * Thymeleafテンプレート・エンジンを初期化する.
@@ -79,6 +83,7 @@ public class HtmlWriter {
 		ctx.setVariable("applicationName", Jobdoc.APPLICATION_NAME);
 		ctx.setVariable("applicationVersion", Jobdoc.APPLICATION_VERSION);
 		ctx.setVariable("generatedAt", new Date());
+		ctx.setVariable("expl", expl);
 		return ctx;
 	}
 
