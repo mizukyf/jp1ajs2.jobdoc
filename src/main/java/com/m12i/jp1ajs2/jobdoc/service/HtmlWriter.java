@@ -16,8 +16,7 @@ import com.m12i.jp1ajs2.jobdoc.Jobdoc;
 import com.m12i.jp1ajs2.jobdoc.JobdocError;
 import com.m12i.jp1ajs2.jobdoc.Messages;
 import com.m12i.jp1ajs2.jobdoc.Parameters;
-
-import usertools.jp1ajs2.unitdef.core.Unit;
+import com.m12i.jp1ajs2.unitdef.Unit;
 
 /**
  * ドキュメント化を担当するオブジェクト.

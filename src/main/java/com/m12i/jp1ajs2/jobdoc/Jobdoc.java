@@ -13,8 +13,7 @@ import com.m12i.jp1ajs2.jobdoc.service.Parser;
 import com.m12i.jp1ajs2.jobdoc.service.HtmlWriter;
 import com.m12i.jp1ajs2.jobdoc.service.SvgWriter;
 import com.m12i.jp1ajs2.jobdoc.service.Traverser;
-
-import usertools.jp1ajs2.unitdef.core.Unit;
+import com.m12i.jp1ajs2.unitdef.Unit;
 
 public class Jobdoc {
 	/**

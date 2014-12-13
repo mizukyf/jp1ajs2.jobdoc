@@ -8,10 +8,10 @@ import java.util.regex.Pattern;
 
 import com.m12i.jp1ajs2.jobdoc.Parameters;
 
-import usertools.jp1ajs2.unitdef.core.Unit;
-import usertools.jp1ajs2.unitdef.ext.MapSize;
-import usertools.jp1ajs2.unitdef.util.Accessors;
-import usertools.jp1ajs2.unitdef.util.Option;
+import com.m12i.jp1ajs2.unitdef.Unit;
+import com.m12i.jp1ajs2.unitdef.MapSize;
+import com.m12i.jp1ajs2.unitdef.Params;
+import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 /**
  * ユニット定義をもとに各種情報を収集するオブジェクト.
@@ -120,9 +120,9 @@ public class Traverser {
 		// ユニットを総当りでチェック
 		for (final Unit u : flattenedList) {
 			// マップサイズ情報の取得を試みる
-			final Option<MapSize> o = Accessors.size(u);
+			final Maybe<MapSize> o = Params.getMapSize(u);
 			// 当該パラメータが存在するかチェック
-			if (o.isSome()) {
+			if (o.isOne()) {
 				// マップサイズ情報を取得する
 				final MapSize tmpMapSize = o.get();
 				// 面積を求める

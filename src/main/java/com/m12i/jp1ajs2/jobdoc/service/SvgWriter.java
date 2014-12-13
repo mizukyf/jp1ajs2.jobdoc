@@ -10,7 +10,10 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 import com.m12i.jp1ajs2.jobdoc.Jobdoc;
 import com.m12i.jp1ajs2.jobdoc.Parameters;
 
-import usertools.jp1ajs2.unitdef.core.Unit;
+import com.m12i.jp1ajs2.unitdef.Unit;
+import com.m12i.jp1ajs2.unitdef.MapSize;
+import com.m12i.jp1ajs2.unitdef.Params;
+import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
 	/**
@@ -25,6 +28,11 @@ public class SvgWriter {
 	 * テンプレート・エンジンの処理モード.
 	 */
 	private static final String TEMPLATE_MODE = "XML";
+	
+	/**
+	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
+	 */
+	private final Traverser trav = new Traverser();
 	
 	/**
 	 * Thymeleafテンプレート・エンジンを初期化する.
@@ -55,7 +63,22 @@ public class SvgWriter {
 		return ctx;
 	}
 	
-	public void renderSvg(final Unit unit, final TemplateEngine engine, final Parameters params) {
+	/**
+	 * ドキュメントをレンダリングする.
+	 * @param target 対象のユニット
+	 * @param engine テンプレート・エンジン
+	 * @param params パラメータ
+	 */
+	public void renderSvg(final Unit root, final TemplateEngine engine, final Parameters params) {
 		// TOOD
+		
+		for (final Unit u : trav.makeFlattenedUnitList(root)) {
+			// マップサイズ情報の取得を試みる
+			final Maybe<MapSize> size = Params.getMapSize(u);
+			if (size.isNothing()) {
+				// マップサイズを持たないユニットはレンダリング対象外
+				continue;
+			}
+		}
 	}
 }
