@@ -69,25 +69,31 @@ td
 					<td>ユニット名</td><td th:text="${unit.name}">(unit name)</td>
 				</tr>
 				<tr>
-					<td>許可モード</td><td th:text="${unit.permissionMode.isSome()} ? ${unit.permissionMode.get()} : '--'">(permission mode)</td>
+					<td>許可モード</td><td th:text="${unit.permissionMode.isOne()} ? ${unit.permissionMode.get()} : '--'">(permission mode)</td>
 				</tr>
 				<tr>
-					<td>ユニット名</td><td th:text="${unit.ownerName.isSome()} ? ${unit.ownerName.get()} : '--'">(owner name)</td>
+					<td>ユニット名</td><td th:text="${unit.ownerName.isOne()} ? ${unit.ownerName.get()} : '--'">(owner name)</td>
 				</tr>
 				<tr>
-					<td>ユニット名</td><td th:text="${unit.resourceGroupName.isSome()} ? ${unit.resourceGroupName.get()} : '--'">(resource group name)</td>
+					<td>ユニット名</td><td th:text="${unit.resourceGroupName.isOne()} ? ${unit.resourceGroupName.get()} : '--'">(resource group name)</td>
 				</tr>
 			</tbody>
 		</table>
 		<h3>ユニット定義パラメーター</h3>
 		<table class="unit-def-params">
 			<thead>
-				<tr><th>パラメーター名</th><th>パラメーター値</th></tr>
+				<tr><th>パラメーター名</th><th>パラメーター値</th><th>説明</th></tr>
 			</thead>
 			<tbody>
 				<tr th:each="p : ${unit.params}">
 					<td th:text="${p.name}">(parameter name)</td>
-					<td><span th:each="v,iterStat : ${p.values}"><span th:text="${v}">(parameter value)</span><span th:text="${iterStat.last} ? ';' : ','">;</span></span></td>
+					<td>
+						<span th:each="v,iterStat : ${p.values}">
+							<span th:text="${v}">(parameter value)</span>
+							<span th:text="${iterStat.last} ? ';' : ','">;</span>
+						</span>
+					</td>
+					<td th:text="${expl.explicate(p)}">(explication)</td>
 				</tr>
 			</tbody>
 		</table>
