@@ -11,7 +11,7 @@
 		<dependency>
 			<groupId>com.m12i.jp1ajs2.unitdef</groupId>
 			<artifactId>jp1ajs2.unitdef</artifactId>
-			<version>1.4.0-RELEASE</version>
+			<version>1.4.1-RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
