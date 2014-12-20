@@ -28,6 +28,10 @@ public class Parameters {
 	 * 読み取り対象のユニット定義ファイルのキャラクタセット.
 	 */
 	private Charset sourceFileCharset = Charset.forName("Windows-31J");
+	/**
+	 * ドライ・ランを行うかどうか.
+	 */
+	private boolean dryRun = false;
 
 	public File getSourceFile() {
 		return sourceFile;
@@ -59,19 +63,26 @@ public class Parameters {
 	public void setSourceFileCharset(Charset sourceFileCharset) {
 		this.sourceFileCharset = sourceFileCharset;
 	}
-	
+	public boolean getDryRun() {
+		return dryRun;
+	}
+	public void setDryRun(boolean dryRun) {
+		this.dryRun = dryRun;
+	}
 	@Override
 	public String toString() {
 		return String.format("%s {destinationDirectory: %s, "
 				+ "sourceFile: %s, "
 				+ "sourceFileCharset: %s, "
 				+ "targetUnitName: %s, "
-				+ "targetUnitNamePattern: %s}",
+				+ "targetUnitNamePattern: %s, "
+				+ "dryRun: %s}",
 				this.getClass().getCanonicalName(),
 				this.destinationDirectory,
 				this.sourceFile,
 				this.sourceFileCharset,
 				this.targetUnitName,
-				this.targetUnitNamePattern);
+				this.targetUnitNamePattern,
+				this.dryRun);
 	}
 }

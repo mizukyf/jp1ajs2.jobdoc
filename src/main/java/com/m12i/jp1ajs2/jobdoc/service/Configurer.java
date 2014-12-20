@@ -27,6 +27,7 @@ public class Configurer {
 	private static final String OPTION_NAME_FOR_SOURCE_FILE_CHARSER = "source-file-charset";
 	private static final char OPTION_NAME_FOR_TARGET_UNIT_NAME = 't';
 	private static final char OPTION_NAME_FOR_TARGET_UNIT_NAME_PATTERN = 'T';
+	private static final String OPTION_NAME_FOR_DRY_RUN = "dry-run";
 	
 	/**
 	 * コマンドライン・オプションの定義を行う.
@@ -72,8 +73,14 @@ public class Configurer {
 				.withDescription("ドキュメント化する対象のユニット名の正規表現パターン")
 				.withArgName("target-unit-name-pattern")
 				.create(OPTION_NAME_FOR_TARGET_UNIT_NAME_PATTERN));
-		
 		ops.addOptionGroup(og);
+		
+		ops.addOption(OptionBuilder
+				.hasArg(false)
+				.isRequired(false)
+				.withDescription("ユニット定義のパースとドキュメント化対象の特定まで行うが実際のドキュメント化は行わない")
+				.withLongOpt(OPTION_NAME_FOR_DRY_RUN)
+				.create());
 		
 		return ops;
 	}
@@ -158,6 +165,9 @@ public class Configurer {
 				throw new JobdocError(Messages.SYNTAX_ERROR_FOUND_IN_TARGET_UNIT_NAME_PATTERN, e2);
 			}
 		}
+		
+		// --dry-runオプションの処理
+		params.setDryRun(cmd.hasOption(OPTION_NAME_FOR_DRY_RUN));
 		
 		return params;
 	}

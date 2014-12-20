@@ -85,9 +85,11 @@ public class Jobdoc {
 			final Parameters params = config.populateParams(cmd);
 			logger.info("パラメータ・オブジェクト： {}", params);
 
-			logger.info("テンプレート・エンジンを初期化します.");
-			final TemplateEngine htmlEngine = html.initializeTemplateEngine();
-			final TemplateEngine svgEngine = svg.initializeTemplateEngine();
+			if (params.getDryRun()) {
+				logger.warn("ドライ・ラン・モードで起動しました. "
+						+ "ユニット定義のパースとドキュメント化対象の特定まで"
+						+ "行いますが実際のドキュメント化は行わないません.");
+			}
 			
 			logger.info("ユニット定義ファイルのパースを行います.");
 			final Unit root = pars.parseSourceFile(params);
@@ -124,7 +126,18 @@ public class Jobdoc {
 			for (final String fqn : targets.keySet()) {
 				logger.info(fqn);
 			}
+			
+			if (params.getDryRun()) {
+				logger.info("すべての処理が完了しました.");
+				
+				// ドライ・ラン・モードで起動した場合はここで処理を中断
+				System.exit(EXIT_CODE_NORMAL);
+			}
 
+			logger.info("テンプレート・エンジンを初期化します.");
+			final TemplateEngine htmlEngine = html.initializeTemplateEngine();
+			final TemplateEngine svgEngine = svg.initializeTemplateEngine();
+			
 			for (final Map.Entry<String,Unit> e : targets.entrySet()) {
 				logger.info("ユニット{}とその配下のユニットをHTMLドキュメント化します.", e.getKey());
 				html.renderHtml(e.getValue(), htmlEngine, params);
