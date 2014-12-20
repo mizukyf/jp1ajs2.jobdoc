@@ -45,7 +45,7 @@ public class Jobdoc {
 	/**
 	 * 設定情報関連を担当するサービス・クラス.
 	 */
-	private final Configurer config = ServiceProvider.getConfigurer();
+	private Configurer config = ServiceProvider.getConfigurer();
 	/**
 	 * ユニット定義パースを担当するサービス・クラス.
 	 */
@@ -127,6 +127,8 @@ public class Jobdoc {
 			e3.printStackTrace();
 			System.exit(EXIT_CODE_ERROR);
 		}
+		
+		logger.info("すべての処理が完了しました.");
 		
 		// エラーも警告もなければ正常終了
 		System.exit(EXIT_CODE_NORMAL);

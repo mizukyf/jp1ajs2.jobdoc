@@ -8,7 +8,14 @@
 
 <!--/* 以下のDIV要素はtree.htmlからユニットのツリー要素をレンダリングするために呼び出される */-->
 <div th:fragment="tree_item">
-	<span><a href="#" target="detail" th:text="${unit.name}" th:href="'detail.html#' + ${unit.fullQualifiedName}">(unit name)</a></span>
+	<span>
+		<a href="#" target="detail"
+		   th:text="${unit.name}" 
+		   th:href="'detail.html#' + ${unit.fullQualifiedName}">(unit name)</a>
+		<span th:if="${#strings.equals(unit.type.code, 'n')}">
+			[<a href="map.svg" target="detail" th:href="'..' + ${unit.fullQualifiedName} + '/map.svg'">Map</a>]
+		</span>
+	</span>
 	<ul>
 		<li th:each="unit : ${unit.subUnits}">
 			<div th:replace="tree_item :: tree_item">

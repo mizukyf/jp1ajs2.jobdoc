@@ -21,7 +21,6 @@ import com.m12i.jp1ajs2.jobdoc.Parameters;
  * アプリケーションのコマンドライン・オプションの定義やパースを担当するオブジェクト.
  */
 public class Configurer {
-	Configurer() {}
 	
 	private static final char OPTION_NAME_FOR_SOURCE_FILE_PATH = 's';
 	private static final char OPTION_NAME_FOR_DEST_DIR_PATH = 'd';

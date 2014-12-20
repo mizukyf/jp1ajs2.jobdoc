@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -17,13 +21,13 @@ import com.m12i.jp1ajs2.jobdoc.JobdocError;
 import com.m12i.jp1ajs2.jobdoc.Messages;
 import com.m12i.jp1ajs2.jobdoc.Parameters;
 import com.m12i.jp1ajs2.unitdef.Unit;
+import com.m12i.jp1ajs2.unitdef.UnitType;
 
 /**
  * ドキュメント化を担当するオブジェクト.
  * テンプレート・ファイルはクラスパス上から検索される。
  */
 public class HtmlWriter {
-	HtmlWriter() {}
 	
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
@@ -51,15 +55,6 @@ public class HtmlWriter {
 	private static final String INDEX_TEMPLATE_NAME = "index";
 	
 	/**
-	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
-	 */
-	private final Traverser trav = ServiceProvider.getTraverser();
-	/**
-	 * ユニット定義パラメータ値の解説情報を提供するサービス・クラス.
-	 */
-	private final Explicator expl = ServiceProvider.getExplicator();
-	
-	/**
 	 * Thymeleafテンプレート・エンジンを初期化する.
 	 * @return テンプレート・エンジン
 	 */
@@ -85,8 +80,41 @@ public class HtmlWriter {
 		ctx.setVariable("applicationName", Jobdoc.APPLICATION_NAME);
 		ctx.setVariable("applicationVersion", Jobdoc.APPLICATION_VERSION);
 		ctx.setVariable("generatedAt", new Date());
-		ctx.setVariable("expl", expl);
+		ctx.setVariable("expl", ServiceProvider.getExplicator());
 		return ctx;
+	}
+	
+	private Map<String, UnitTypeStats> makeUnitTypeStats(final Unit target) {
+		final Map<String, UnitTypeStats> statsList = new LinkedHashMap<String, HtmlWriter.UnitTypeStats>();
+		for (final UnitType t: UnitType.values()) {
+			statsList.put(t.getCode(), new UnitTypeStats(t));
+		}
+		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(target)) {
+			statsList.get(u.getType().getCode()).addCount();
+		}
+		return statsList;
+	}
+	
+	public static final class UnitTypeStats {
+		private final String code;
+		private final String desc;
+		private int count = 0;
+		public UnitTypeStats(final UnitType t) {
+			this.code = t.getCode();
+			this.desc = t.getDescription();
+		}
+		public int getCount() {
+			return count;
+		}
+		public void addCount() {
+			this.count ++;
+		}
+		public String getCode() {
+			return code;
+		}
+		public String getDesc() {
+			return desc;
+		}
 	}
 
 	/**
@@ -96,6 +124,8 @@ public class HtmlWriter {
 	 * @param params パラメータ
 	 */
 	public void renderHtml(final Unit target, final TemplateEngine engine, final Parameters params) {
+		final Traverser trav = ServiceProvider.getTraverser();
+		
 		// ユニット名を使ってディレクトリを作成
 		final File baseDir = new File(params.getDestinationDirectory(), target.getName());
 		baseDir.mkdir();
@@ -109,6 +139,7 @@ public class HtmlWriter {
 		ctx.setVariable("flattenedList", flattenedList);
 		ctx.setVariable("maxDepth", trav.measureMaxDepth(target));
 		ctx.setVariable("maxArea", trav.measureMaxArea(flattenedList));
+		ctx.setVariable("unitTypeStats", makeUnitTypeStats(target));
 		
 		// ドキュメントのレンダリング処理を行う
 		try {

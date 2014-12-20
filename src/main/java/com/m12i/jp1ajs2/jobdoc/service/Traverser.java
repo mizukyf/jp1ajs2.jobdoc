@@ -16,7 +16,6 @@ import com.m12i.jp1ajs2.unitdef.util.Maybe;
  * ユニット定義をもとに各種情報を収集するオブジェクト.
  */
 public class Traverser {
-	Traverser() {}
 	
 	/**
 	 * ユニット・リストのキャッシュ.
@@ -32,7 +31,7 @@ public class Traverser {
 		final String key = root.getFullQualifiedName();
 		List<Unit> result = flattenedUnitListCache.get(key);
 		
-		if (flattenedUnitListCache != null) {
+		if (result != null) {
 			return result;
 		}
 		

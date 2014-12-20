@@ -25,10 +25,10 @@ import com.m12i.jp1ajs2.unitdef.Unit;
 import com.m12i.jp1ajs2.unitdef.MapSize;
 import com.m12i.jp1ajs2.unitdef.Params;
 import com.m12i.jp1ajs2.unitdef.UnitConnectionType;
+import com.m12i.jp1ajs2.unitdef.UnitType;
 import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
-	SvgWriter() {}
 	
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
@@ -95,10 +95,11 @@ public class SvgWriter {
 		final Context ctx = this.makeContext();
 		
 		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(target)) {
-			// マップサイズ情報の取得を試みる
+			// マップサイズ情報を取得
 			final Maybe<MapSize> size = Params.getMapSize(u);
-			if (size.isNothing()) {
-				// マップサイズを持たないユニットはレンダリング対象外
+
+			if (u.getType() != UnitType.JOBNET || size.isNothing()) {
+				// ジョブネット以外はレンダリング対象外
 				continue;
 			}
 			

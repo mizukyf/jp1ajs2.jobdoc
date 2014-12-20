@@ -2,17 +2,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xml:lang="ja" lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+ul, li
+{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+ul
+{
+	margin-left: 1em;
+}
+</style>
 </head>
 <body>
 
-<p><a href="#" target="detail" th:text="${root.name}" th:href="'detail.html#' + ${root.fullQualifiedName}">(root unit name)</a></p>
-<ul>
-	<li th:each="unit : ${root.subUnits}">
-		<div th:replace="tree_item :: tree_item">
-		...
-		</div>
-	</li>
-</ul>
+<h1 th:text="${root.name}">(root unit name)</h1>
+<p>
+	<a href="detail.html" target="detail">ユニットの概要</a>
+</p>
+<h2>ユニット・ツリー</h2>
+<div>
+	<span>
+		<a href="#" target="detail" 
+		   th:text="${root.name}" 
+		   th:href="'detail.html#' + ${root.fullQualifiedName}">
+			(root unit name)
+		</a>
+		<span th:if="${#strings.equals(root.type.code, 'n')}">
+			[<a href="map.svg" target="detail" th:href="'..' + ${root.fullQualifiedName} + '/map.svg'">Map</a>]
+		</span>
+	</span>
+	<ul>
+		<li th:each="unit : ${root.subUnits}">
+			<div th:replace="tree_item :: tree_item">
+			...
+			</div>
+		</li>
+	</ul>
+</div>
 
 </body>
 </html>

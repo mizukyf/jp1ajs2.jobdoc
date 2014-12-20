@@ -53,10 +53,10 @@ public final class ServiceProvider {
 	public static SvgWriter getSvgWriter() {
 		return svg;
 	}
-	public static Logger getLogger() {
-		return logger;
-	}
 	public static Explicator getExplicator() {
 		return expl;
+	}
+	public static Logger getLogger() {
+		return logger;
 	}
 }

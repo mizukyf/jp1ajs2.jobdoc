@@ -20,6 +20,11 @@ td
 	border: 1px solid #000;
 	border-collapse: collapse;
 }
+table
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
 th,
 td
 {
@@ -50,6 +55,18 @@ td
 						（ヨコ：<span th:text="${maxArea.width}"></span> x
 						タテ：<span th:text="${maxArea.height}"></span>）
 					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table>
+			<thead>
+				<tr><th>ユニット種別</th><th>ユニット数</th><th>備考</th></tr>
+			</thead>
+			<tbody>
+				<tr th:each="s : ${unitTypeStats}">
+					<td th:text="${s.key}">(unit type)</td>
+					<td th:text="${s.value.count}">(unit count)</td>
+					<td th:text="${s.value.desc}">(description)</td>
 				</tr>
 			</tbody>
 		</table>

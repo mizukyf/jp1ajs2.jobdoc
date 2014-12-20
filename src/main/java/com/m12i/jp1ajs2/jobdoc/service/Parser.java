@@ -13,7 +13,6 @@ import com.m12i.jp1ajs2.unitdef.Units;
  * ユニット定義ファイルのパース処理を担当するオブジェクト.
  */
 public class Parser {
-	Parser() {}
 	
 	/**
 	 * ユニット定義ファイルをパースする.
