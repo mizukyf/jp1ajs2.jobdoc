@@ -92,8 +92,23 @@ public class Jobdoc {
 			logger.info("ユニット定義ファイルのパースを行います.");
 			final Unit root = pars.parseSourceFile(params);
 			
-			logger.info("対象として指定されたユニットを検索します.");
+			logger.info("指定された条件にマッチするユニットを検索します.");
 			final Map<String,Unit> targets = trav.collectTargetUnits(root, params);
+			
+			logger.info("条件にマッチするユニット数： {}", targets.size());
+
+			logger.info("検索結果にネストしたユニットが存在しないかチェックします.");
+			final Map<String,Unit> removedUnits = trav.removeNestedUnits(targets);
+			
+			if (removedUnits.isEmpty()) {
+				logger.info("ネストしたユニットはありません.");
+			} else {
+				logger.warn("ネストしたユニット数： {}", removedUnits.size());
+				logger.warn("次のユニットはネストしたユニットとしてドキュメント化対象から除外されました：");
+				for (final String fqn : removedUnits.keySet()) {
+					logger.warn(fqn);
+				}
+			}
 			
 			// 対象ユニットが0の場合は警告終了
 			if (targets.isEmpty()) {
@@ -113,17 +128,26 @@ public class Jobdoc {
 		} catch (final JobdocError e1) {
 			// 異常終了（アプリケーション・エラーの場合）
 			logger.error(Messages.APPLICATION_ERROR_HAS_OCCURED, e1);
+			if (e1.getMessage() != null) {
+				logger.warn(e1.getMessage());
+			}
 			e1.printStackTrace();
 			System.exit(EXIT_CODE_ERROR);
 			
 		} catch (final JobdocWarning e2) {
 			// 警告終了
 			logger.warn(Messages.APPLICATION_WARNING_HAS_OCCURED);
+			if (e2.getMessage() != null) {
+				logger.warn(e2.getMessage());
+			}
 			System.exit(EXIT_CODE_WARNING);
 			
 		} catch (final Exception e3) {
 			// 異常終了（想定外のエラーの場合）
 			logger.error(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e3);
+			if (e3.getMessage() != null) {
+				logger.warn(e3.getMessage());
+			}
 			e3.printStackTrace();
 			System.exit(EXIT_CODE_ERROR);
 		}

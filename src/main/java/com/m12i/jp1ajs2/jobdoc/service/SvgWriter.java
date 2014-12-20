@@ -25,7 +25,6 @@ import com.m12i.jp1ajs2.unitdef.Unit;
 import com.m12i.jp1ajs2.unitdef.MapSize;
 import com.m12i.jp1ajs2.unitdef.Params;
 import com.m12i.jp1ajs2.unitdef.UnitConnectionType;
-import com.m12i.jp1ajs2.unitdef.UnitType;
 import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
@@ -98,8 +97,8 @@ public class SvgWriter {
 			// マップサイズ情報を取得
 			final Maybe<MapSize> size = Params.getMapSize(u);
 
-			if (u.getType() != UnitType.JOBNET || size.isNothing()) {
-				// ジョブネット以外はレンダリング対象外
+			if (size.isNothing()) {
+				// マップサイズを持たないものはレンダリング対象外
 				continue;
 			}
 			

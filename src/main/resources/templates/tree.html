@@ -17,11 +17,6 @@ ul
 </head>
 <body>
 
-<h1 th:text="${root.name}">(root unit name)</h1>
-<p>
-	<a href="detail.html" target="detail">ユニットの概要</a>
-</p>
-<h2>ユニット・ツリー</h2>
 <div>
 	<span>
 		<a href="#" target="detail" 
@@ -29,8 +24,9 @@ ul
 		   th:href="'detail.html#' + ${root.fullQualifiedName}">
 			(root unit name)
 		</a>
-		<span th:if="${#strings.equals(root.type.code, 'n')}">
-			[<a href="map.svg" target="detail" th:href="'..' + ${root.fullQualifiedName} + '/map.svg'">Map</a>]
+		<span th:unless="${root.getParams('sz').isEmpty()}">
+			[ <a href="detail.html" target="detail">概要</a> |
+			<a href="map.svg" target="detail" th:href="'..' + ${root.fullQualifiedName} + '/map.svg'">マップ</a> ]
 		</span>
 	</span>
 	<ul>

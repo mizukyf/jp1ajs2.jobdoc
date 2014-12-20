@@ -13,7 +13,7 @@
 		   th:text="${unit.name}" 
 		   th:href="'detail.html#' + ${unit.fullQualifiedName}">(unit name)</a>
 		<span th:if="${#strings.equals(unit.type.code, 'n')}">
-			[<a href="map.svg" target="detail" th:href="'..' + ${unit.fullQualifiedName} + '/map.svg'">Map</a>]
+			[ <a href="map.svg" target="detail" th:href="'..' + ${unit.fullQualifiedName} + '/map.svg'">マップ</a> ]
 		</span>
 	</span>
 	<ul>

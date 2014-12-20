@@ -3,6 +3,7 @@ package com.m12i.jp1ajs2.jobdoc.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import com.m12i.jp1ajs2.jobdoc.Parameters;
@@ -65,14 +66,44 @@ public class Traverser {
 		final String t = params.getTargetUnitName();
 		final Pattern p = params.getTargetUnitNamePattern();
 		if (t != null && root.getName().equals(t)) {
-			map.put(t, root);
+			map.put(root.getFullQualifiedName(), root);
 		}
-		if (p != null && p.matcher(root.getFullQualifiedName()).matches()) {
-			map.put(root.getName(), root);
+		if (p != null && p.matcher(root.getFullQualifiedName()).find()) {
+			map.put(root.getFullQualifiedName(), root);
 		}
 		for (final Unit child : root.getSubUnits()) {
 			collectTargetUnitsHelper(map, child, params);
 		}
+	}
+	
+	/**
+	 * ネストした子孫ユニットを除去する.
+	 * 引数で指定されたマップの内容はこのメソッドの中で変更される。
+	 * ネストした子孫ユニットとして判断され除去されたユニットはこのメソッドの戻り値として得られる。
+	 * 例えばマップ内に完全名として{@code "/ROOT_UNIT"}と
+	 * {@code "/ROOT_UNIT/SUB_UNIT"}と
+	 * {@code "/ROOT_UNIT/SUB_UNIT/DESCENDENT_UNIT"}のそれぞれを持つユニットが存在した場合、
+	 * 最初の1つ以外は除去される。
+	 * @param unitMap 処理対象のマップ
+	 * @return 除去されたユニットのみからなるマップ
+	 */
+	public Map<String,Unit> removeNestedUnits(Map<String,Unit> unitMap) {
+		final Map<String,Unit> result = new HashMap<String,Unit> ();
+		final Map<String,Unit> removed = new HashMap<String,Unit> ();
+		outer:
+		for (final Entry<String, Unit> e1 : unitMap.entrySet()) {
+			final String e1fqn = e1.getKey();
+			for (final String e2fqn : unitMap.keySet()) {
+				if (e1fqn != e2fqn && e1fqn.startsWith(e2fqn)) {
+					removed.put(e1fqn, e1.getValue());
+					continue outer;
+				}
+			}
+			result.put(e1.getKey(), e1.getValue());
+		}
+		unitMap.clear();
+		unitMap.putAll(result);
+		return removed;
 	}
 	
 	/**
