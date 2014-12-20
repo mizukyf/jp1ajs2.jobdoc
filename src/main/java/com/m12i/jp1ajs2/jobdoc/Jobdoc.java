@@ -95,7 +95,11 @@ public class Jobdoc {
 			logger.info("指定された条件にマッチするユニットを検索します.");
 			final Map<String,Unit> targets = trav.collectTargetUnits(root, params);
 			
-			logger.info("条件にマッチするユニット数： {}", targets.size());
+			logger.info("マッチするユニット数： {}", targets.size());
+			logger.info("検索の結果次のユニットが見つかりました：");
+			for (final String fqn : targets.keySet()) {
+				logger.info(fqn);
+			}
 
 			logger.info("検索結果にネストしたユニットが存在しないかチェックします.");
 			final Map<String,Unit> removedUnits = trav.removeNestedUnits(targets);
@@ -116,6 +120,10 @@ public class Jobdoc {
 			}
 			
 			logger.info("ドキュメント化対象ユニット数： {}", targets.size());
+			logger.info("次のユニットがドキュメント化対象となります：");
+			for (final String fqn : targets.keySet()) {
+				logger.info(fqn);
+			}
 
 			for (final Map.Entry<String,Unit> e : targets.entrySet()) {
 				logger.info("ユニット{}とその配下のユニットをHTMLドキュメント化します.", e.getKey());
