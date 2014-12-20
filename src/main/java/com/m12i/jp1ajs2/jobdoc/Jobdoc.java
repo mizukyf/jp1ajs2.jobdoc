@@ -5,10 +5,10 @@ import java.util.Map;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 
 import com.m12i.jp1ajs2.jobdoc.service.Configurer;
+import com.m12i.jp1ajs2.jobdoc.service.ServiceProvider;
 import com.m12i.jp1ajs2.jobdoc.service.Parser;
 import com.m12i.jp1ajs2.jobdoc.service.HtmlWriter;
 import com.m12i.jp1ajs2.jobdoc.service.SvgWriter;
@@ -41,27 +41,27 @@ public class Jobdoc {
 	 * アプリケーション固有のロガー.
 	 * ログ出力設定は`log4j.properties`で行う。
 	 */
-	private final Logger logger = LoggerFactory.getLogger(Jobdoc.class);
+	private final Logger logger = ServiceProvider.getLogger();
 	/**
 	 * 設定情報関連を担当するサービス・クラス.
 	 */
-	private final Configurer config = new Configurer();
+	private final Configurer config = ServiceProvider.getConfigurer();
 	/**
 	 * ユニット定義パースを担当するサービス・クラス.
 	 */
-	private final Parser pars = new Parser();
+	private final Parser pars = ServiceProvider.getParser();
 	/**
 	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
 	 */
-	private final Traverser trav = new Traverser();
+	private final Traverser trav = ServiceProvider.getTraverser();
 	/**
 	 * ドキュメント化のHTML部分を担当するサービス・クラス.
 	 */
-	private final HtmlWriter html = new HtmlWriter();
+	private final HtmlWriter html = ServiceProvider.getHtmlWriter();
 	/**
 	 * ドキュメント化のSVG部分を担当するサービス・クラス.
 	 */
-	private final SvgWriter svg = new SvgWriter();
+	private final SvgWriter svg = ServiceProvider.getSvgWriter();
 	
 	/**
 	 * アプリケーションの主処理を実行する.

@@ -23,6 +23,8 @@ import com.m12i.jp1ajs2.unitdef.Unit;
  * テンプレート・ファイルはクラスパス上から検索される。
  */
 public class HtmlWriter {
+	HtmlWriter() {}
+	
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
 	 */
@@ -51,11 +53,11 @@ public class HtmlWriter {
 	/**
 	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
 	 */
-	private final Traverser trav = new Traverser();
+	private final Traverser trav = ServiceProvider.getTraverser();
 	/**
 	 * ユニット定義パラメータ値の解説情報を提供するサービス・クラス.
 	 */
-	private final Explicator expl = new Explicator();
+	private final Explicator expl = ServiceProvider.getExplicator();
 	
 	/**
 	 * Thymeleafテンプレート・エンジンを初期化する.

@@ -9,6 +9,7 @@ import com.m12i.jp1ajs2.unitdef.UnitType;
  * ユニット定義パラメータ値の解説情報を提供するオブジェクト.
  */
 public class Explicator {
+	Explicator() {}
 	
 	private static final String UNIT_TYPE_IS_A1 = "ユニット種別は`%1$s`";
 	private static final String UNIT_COMMENT_IS_A1 = "コメントは`%1$s`";

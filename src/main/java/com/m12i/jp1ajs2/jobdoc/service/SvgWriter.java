@@ -28,6 +28,8 @@ import com.m12i.jp1ajs2.unitdef.UnitConnectionType;
 import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
+	SvgWriter() {}
+	
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
 	 */
@@ -40,17 +42,18 @@ public class SvgWriter {
 	 * テンプレート・エンジンの処理モード.
 	 */
 	private static final String TEMPLATE_MODE = "XML";
-	
-	private static final int GRID_R = 60;
-	
-	private static final int GRID_DIA = GRID_R * 2;
-	
-	private static final int MARGIN_R = GRID_R - 10;
-	
 	/**
-	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
+	 * マス目の半径.
 	 */
-	private final Traverser trav = new Traverser();
+	private static final int GRID_R = 60;
+	/**
+	 * マス目の直径
+	 */
+	private static final int GRID_DIA = GRID_R * 2;
+	/**
+	 * 関連線の始点・終点とグリッドの中心の間に設けるマージン.
+	 */
+	private static final int MARGIN_R = GRID_R - 10;
 	
 	/**
 	 * Thymeleafテンプレート・エンジンを初期化する.
@@ -87,11 +90,11 @@ public class SvgWriter {
 	 * @param engine テンプレート・エンジン
 	 * @param params パラメータ
 	 */
-	public void renderSvg(final Unit root, final TemplateEngine engine, final Parameters params) {
+	public void renderSvg(final Unit target, final TemplateEngine engine, final Parameters params) {
 		// コンテキストを初期化
 		final Context ctx = this.makeContext();
 		
-		for (final Unit u : trav.makeFlattenedUnitList(root)) {
+		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(target)) {
 			// マップサイズ情報の取得を試みる
 			final Maybe<MapSize> size = Params.getMapSize(u);
 			if (size.isNothing()) {

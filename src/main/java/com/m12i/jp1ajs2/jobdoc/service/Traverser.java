@@ -1,44 +1,44 @@
 package com.m12i.jp1ajs2.jobdoc.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.m12i.jp1ajs2.jobdoc.Parameters;
-
 import com.m12i.jp1ajs2.unitdef.Unit;
 import com.m12i.jp1ajs2.unitdef.MapSize;
 import com.m12i.jp1ajs2.unitdef.Params;
+import com.m12i.jp1ajs2.unitdef.Units;
 import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 /**
  * ユニット定義をもとに各種情報を収集するオブジェクト.
  */
 public class Traverser {
+	Traverser() {}
+	
+	/**
+	 * ユニット・リストのキャッシュ.
+	 */
+	private final Map<String, List<Unit>> flattenedUnitListCache = new HashMap<String, List<Unit>>();
+	
 	/**
 	 * ユニット定義情報のツリー構造をリスト構造に変換する.
 	 * @param root ベースとなるユニット
 	 * @return ベースとなるユニットとその子孫ユニットからなるリスト
 	 */
 	public List<Unit> makeFlattenedUnitList(final Unit root) {
-		final List<Unit> result = new ArrayList<Unit>();
-		makeFlattenedUnitListHelper(result, root);
-		return result;
-	}
-	
-	/**
-	 * {@link #makeFlattenedUnitList(Unit)}メソッドのためのヘルパ関数.
-	 * ユニットのツリー構造を深さ優先で再帰的にたどりながらリストを組み立てていく。
-	 * @param list リスト
-	 * @param unit ユニット
-	 */
-	private void makeFlattenedUnitListHelper(final List<Unit> list, final Unit unit) {
-		list.add(unit);
-		for (final Unit child : unit.getSubUnits()) {
-			makeFlattenedUnitListHelper(list, child);
+		final String key = root.getFullQualifiedName();
+		List<Unit> result = flattenedUnitListCache.get(key);
+		
+		if (flattenedUnitListCache != null) {
+			return result;
 		}
+		
+		result = Units.asList(root);
+		flattenedUnitListCache.put(key, result);
+		return result;
 	}
 	
 	/**
