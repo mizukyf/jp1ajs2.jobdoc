@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:th="http://www.thymeleaf.org"
+     contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" preserveAspectRatio="xMidYMid meet" version="1.0"
+     width="1320.0" height="576.0" th:width="${mapWidth}" th:height="${mapHeight}">
+
+    <defs>
+        <marker id="ar-seq-end" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" viewBox="0 0 10 10" refX="5" refY="5" orient="auto">
+            <polygon points="5,0 5,10 10,5 " fill="black"/>
+        </marker>
+        <marker id="ar-con-end" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" viewBox="0 0 10 10" refX="5" refY="5" orient="auto">
+            <polygon points="5,0 5,10 10,5 " fill="blue"/>
+        </marker>
+        <marker id="ar-con-start" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" viewBox="0 0 10 10" refX="5" refY="5" orient="auto">
+            <polygon points="5,0 5,10 0,5 " fill="blue"/>
+        </marker>
+    </defs>
+
+    <g th:unless="${#lists.isEmpty(elements)}" th:each="el : ${elements}">
+        <g th:unless="${#strings.equals(el.unit.type.code, 'n')}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
+           th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
+            <circle fill="#cf9" r="40.0" cx="40.0" cy="40.0"/>
+            <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                 th:text="${el.unit.name}">UNIT_NAME_XXXX</text>
+            <text x="40" y="56" font-size="10" dominant-baseline="middle" text-anchor="middle"
+                th:unless="${el.unit.comment.isEmpty()}" th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"
+                       th:text="${ln}" th:attr="y=|${iterStat.index * 12 + 56}|">
+                コメント
+            </text>
+        </g>
+        <g th:if="${#strings.equals(el.unit.type.code, 'n')}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
+           th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
+            <line y2="64.0" stroke-width="8.0" x1="40.0" x2="16.0" stroke="#cf9" y1="16.0"/>
+            <line y2="64.0" stroke-width="8.0" x1="16.0" x2="64.0" stroke="#cf9" y1="64.0"/>
+            <line y2="16.0" stroke-width="8.0" x1="64.0" x2="40.0" stroke="#cf9" y1="64.0"/>
+            <circle fill="#cf9" r="16.0" cx="40.0" cy="16.0"/>
+            <circle fill="#cf9" r="16.0" cx="16.0" cy="64.0"/>
+            <circle fill="#cf9" r="16.0" cx="64.0" cy="64.0"/>
+            <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                th:text="${el.unit.name}">UNIT_NAME_XXXX</text>
+                <text x="40" y="56" font-size="10" dominant-baseline="middle" text-anchor="middle"
+                th:unless="${el.unit.comment.isEmpty()}" th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"
+                th:text="${ln}" th:attr="y=|${iterStat.index * 12 + 56}|">
+                コメント
+            </text>
+        </g>
+    </g>
+
+    <g stroke-width="2" fill="none" th:unless="${#lists.isEmpty(arrowLines)}" th:each="al : ${arrowLines}">
+        <path stroke="blue" th:if="${al.twoHeaded}" d="M100,60l100,0" marker-start="url(#ar-con-start)" marker-end="url(#ar-con-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
+        <path stroke="black" th:unless="${al.twoHeaded}" d="M100,60l100,0" marker-end="url(#ar-seq-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
+    </g>
+</svg>
