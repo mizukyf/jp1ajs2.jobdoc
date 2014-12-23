@@ -141,7 +141,7 @@ public class Configurer {
 		if (cmd.hasOption(OPTION_NAME_FOR_DEST_DIR_PATH)) {
 			final String d = cmd.getOptionValue(OPTION_NAME_FOR_DEST_DIR_PATH);
 			final File df = new File(d);
-			if (!df.isFile()) {
+			if (!df.isDirectory()) {
 				throw new JobdocError(Messages.DESTINATION_DIRECTORY_DOES_NOT_EXIST);
 			}
 			params.setDestinationDirectory(df);

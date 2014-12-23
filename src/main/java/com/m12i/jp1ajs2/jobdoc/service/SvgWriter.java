@@ -284,7 +284,6 @@ public class SvgWriter {
 	
 	public static final class TemplateFunctions {
 		public boolean isViewable(final Unit unit) {
-			System.out.println(unit.getType());
 			return unit.getType() != UnitType.ROOT_JOBNET_INVOKE_CONDITION
 					&& unit.getType() != UnitType.GROUP;
 		}
