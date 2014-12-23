@@ -25,6 +25,7 @@ import com.m12i.jp1ajs2.unitdef.Unit;
 import com.m12i.jp1ajs2.unitdef.MapSize;
 import com.m12i.jp1ajs2.unitdef.Params;
 import com.m12i.jp1ajs2.unitdef.UnitConnectionType;
+import com.m12i.jp1ajs2.unitdef.UnitType;
 import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
@@ -80,6 +81,7 @@ public class SvgWriter {
 		ctx.setVariable("applicationName", Jobdoc.APPLICATION_NAME);
 		ctx.setVariable("applicationVersion", Jobdoc.APPLICATION_VERSION);
 		ctx.setVariable("generatedAt", new Date());
+		ctx.setVariable("tmplFunc", new TemplateFunctions());
 		return ctx;
 	}
 	
@@ -89,11 +91,11 @@ public class SvgWriter {
 	 * @param engine テンプレート・エンジン
 	 * @param params パラメータ
 	 */
-	public void renderSvg(final Unit target, final TemplateEngine engine, final Parameters params) {
+	public void renderSvg(final Unit root, final TemplateEngine engine, final Parameters params) {
 		// コンテキストを初期化
 		final Context ctx = this.makeContext();
 		
-		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(target)) {
+		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(root)) {
 			// マップサイズ情報を取得
 			final Maybe<MapSize> size = Params.getMapSize(u);
 
@@ -113,7 +115,7 @@ public class SvgWriter {
 			ctx.setVariable("arrowLines", als);
 			
 			// SVGファイルを出力するディレクトリのパスを算出（ベースパス＋完全名）
-			final File baseDir = new File(params.getDestinationDirectory(), u.getFullQualifiedName());
+			final File baseDir = new File(makeDirectoryPath(root, u, params));
 			// ディレクトリを一括作成（まだ存在しなければ）
 			baseDir.mkdirs();
 			
@@ -129,6 +131,19 @@ public class SvgWriter {
 				throw new JobdocError(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e);
 			}
 		}
+	}
+	
+	/**
+	 * SVGファイルを出力するディレクトリ・パスをくみたてる.
+	 * @param root ドキュメント化対象のユニット定義
+	 * @param target ドキュメント化対象ユニットかその子孫ユニットで直近SVG化しようとしているユニット定義
+	 * @param params パラメータ
+	 * @return SVGファイルのディレクトリ・パス
+	 */
+	private String makeDirectoryPath(final Unit root, final Unit target, final Parameters params) {
+		final int lastSlash = root.getFullQualifiedName().lastIndexOf('/');
+		final String relativePath = target.getFullQualifiedName().substring(lastSlash);
+		return params.getDestinationDirectory() + relativePath;
 	}
 	
 	/**
@@ -264,6 +279,14 @@ public class SvgWriter {
 		@Override
 		public String toString() {
 			return String.format("Point(%s,%s)", x, y);
+		}
+	}
+	
+	public static final class TemplateFunctions {
+		public boolean isViewable(final Unit unit) {
+			System.out.println(unit.getType());
+			return unit.getType() != UnitType.ROOT_JOBNET_INVOKE_CONDITION
+					&& unit.getType() != UnitType.GROUP;
 		}
 	}
 }

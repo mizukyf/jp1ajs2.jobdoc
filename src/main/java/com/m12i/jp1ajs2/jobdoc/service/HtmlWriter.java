@@ -18,6 +18,7 @@ import com.m12i.jp1ajs2.jobdoc.Jobdoc;
 import com.m12i.jp1ajs2.jobdoc.JobdocError;
 import com.m12i.jp1ajs2.jobdoc.Messages;
 import com.m12i.jp1ajs2.jobdoc.Parameters;
+import com.m12i.jp1ajs2.unitdef.Param;
 import com.m12i.jp1ajs2.unitdef.Unit;
 import com.m12i.jp1ajs2.unitdef.UnitType;
 
@@ -78,10 +79,14 @@ public class HtmlWriter {
 		ctx.setVariable("applicationName", Jobdoc.APPLICATION_NAME);
 		ctx.setVariable("applicationVersion", Jobdoc.APPLICATION_VERSION);
 		ctx.setVariable("generatedAt", new Date());
-		ctx.setVariable("expl", ServiceProvider.getExplicator());
 		return ctx;
 	}
 	
+	/**
+	 * ユニット種別統計を生成して返す.
+	 * @param target ドキュメント化対象の基底となるユニット定義
+	 * @return ユニット種別統計
+	 */
 	private Map<String, UnitTypeStats> makeUnitTypeStats(final Unit target) {
 		final Map<String, UnitTypeStats> statsList = new LinkedHashMap<String, HtmlWriter.UnitTypeStats>();
 		for (final UnitType t: UnitType.values()) {
@@ -93,6 +98,9 @@ public class HtmlWriter {
 		return statsList;
 	}
 	
+	/**
+	 * ユニット種別統計.
+	 */
 	public static final class UnitTypeStats {
 		private final String code;
 		private final String desc;
@@ -101,15 +109,30 @@ public class HtmlWriter {
 			this.code = t.getCode();
 			this.desc = t.getDescription();
 		}
+		/**
+		 * 当該ユニット種別の出現回数を取得する.
+		 * @return 出現回数
+		 */
 		public int getCount() {
 			return count;
 		}
+		/**
+		 * 当該ユニット種別の出現回数をカウントアップする.
+		 */
 		public void addCount() {
 			this.count ++;
 		}
+		/**
+		 * 当該ユニット種別のコード値（{@code "g"}・{@code "n"}など）を返す.
+		 * @return コード値
+		 */
 		public String getCode() {
 			return code;
 		}
+		/**
+		 * 当該ユニット種別の説明テキストを返す.
+		 * @return 説明テキスト
+		 */
 		public String getDesc() {
 			return desc;
 		}
@@ -133,6 +156,7 @@ public class HtmlWriter {
 		// コンテキストを初期化
 		final Context ctx = makeContext();
 		// 種々のテンプレート変数を追加
+		ctx.setVariable("tmplFunc", new TemplateFunctions(params, target));
 		ctx.setVariable("root", target);
 		ctx.setVariable("flattenedList", flattenedList);
 		ctx.setVariable("maxDepth", trav.measureMaxDepth(target));
@@ -156,6 +180,56 @@ public class HtmlWriter {
 		} catch (final IOException e) {
 			// IOエラーが発生した場合はアベンド
 			throw new JobdocError(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e);
+		}
+	}
+	
+	/**
+	 * テンプレート内で使用するユーティリティ.
+	 */
+	public final class TemplateFunctions {
+		private final Explicator expl;
+		private final Parameters params;
+		private final Unit root;
+		private TemplateFunctions(final Parameters params, final Unit root) {
+			this.params = params;
+			this.expl = ServiceProvider.getExplicator();
+			this.root = root;
+		}
+		/**
+		 * コマンドラインで指定されたパラメータを取得する.
+		 * @return パラメータ
+		 */
+		public Parameters getJobdocParams() {
+			return params;
+		}
+		/**
+		 * ユニット定義パラメータの説明テキストを取得する.
+		 * @param p ユニット定義パラメータ
+		 * @return 説明テキスト
+		 */
+		public String explicate(final Param p) {
+			return expl.explicate(p);
+		}
+		/**
+		 * マップ（SVGファイル）の相対パスを生成する.
+		 * @param target ドキュメント化対象もしくはその子孫にあたり直近ツリー要素出力の対象となっているユニット定義
+		 * @return マップの相対パス
+		 */
+		public String createMapPath(final Unit target) {
+			System.out.println(root.getFullQualifiedName());
+			System.out.println(target.getFullQualifiedName());
+			final int rootFqnLen = root.getFullQualifiedName().length();
+			final String relativePath = target.getFullQualifiedName().substring(rootFqnLen) + "/map.svg";
+			return relativePath.substring(1);
+		}
+		/**
+		 * ドキュメント化対象ユニット定義を基底とするユニット定義完全名を生成する.
+		 * @param target ドキュメント化対象もしくはその子孫にあたり直近ツリー要素出力の対象となっているユニット定義
+		 * @return ユニット定義完全名
+		 */
+		public String createRelativeFqn(final Unit target) {
+			final int lastSlash = root.getFullQualifiedName().lastIndexOf('/');
+			return target.getFullQualifiedName().substring(lastSlash);
 		}
 	}
 }

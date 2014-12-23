@@ -11,9 +11,9 @@
 	<span>
 		<a href="#" target="detail"
 		   th:text="${unit.name}" 
-		   th:href="'detail.html#' + ${unit.fullQualifiedName}">(unit name)</a>
-		<span th:if="${#strings.equals(unit.type.code, 'n')}">
-			[ <a href="map.svg" target="detail" th:href="'..' + ${unit.fullQualifiedName} + '/map.svg'">マップ</a> ]
+		   th:href="'detail.html#' + ${tmplFunc.createRelativeFqn(unit)}">(unit name)</a>
+		<span th:unless="${unit.getParams('sz').isEmpty()}">
+			[ <a href="map.svg" target="detail" th:href="${tmplFunc.createMapPath(unit)}">マップ</a> ]
 		</span>
 	</span>
 	<ul>

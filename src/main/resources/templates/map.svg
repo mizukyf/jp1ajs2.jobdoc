@@ -15,8 +15,8 @@
         </marker>
     </defs>
 
-    <g th:unless="${#lists.isEmpty(elements)}" th:each="el : ${elements}">
-        <g th:unless="${#strings.equals(el.unit.type.code, 'n')}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
+    <g th:each="el : ${elements}">
+        <g th:if="${tmplFunc.isViewable(el.unit)} and ${el.unit.getParams('sz').isEmpty()}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
             <circle fill="#cf9" r="40.0" cx="40.0" cy="40.0"/>
             <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
@@ -27,7 +27,7 @@
                 コメント
             </text>
         </g>
-        <g th:if="${#strings.equals(el.unit.type.code, 'n')}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
+        <g th:if="${tmplFunc.isViewable(el.unit)} and ${not el.unit.getParams('sz').isEmpty()}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
             <line y2="64.0" stroke-width="8.0" x1="40.0" x2="16.0" stroke="#cf9" y1="16.0"/>
             <line y2="64.0" stroke-width="8.0" x1="16.0" x2="64.0" stroke="#cf9" y1="64.0"/>

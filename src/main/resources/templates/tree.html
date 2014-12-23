@@ -21,13 +21,12 @@ ul
 	<span>
 		<a href="#" target="detail" 
 		   th:text="${root.name}" 
-		   th:href="'detail.html#' + ${root.fullQualifiedName}">
+		   th:href="'detail.html#' + ${tmplFunc.createRelativeFqn(root)}">
 			(root unit name)
 		</a>
-		<span th:unless="${root.getParams('sz').isEmpty()}">
-			[ <a href="detail.html" target="detail">概要</a> |
-			<a href="map.svg" target="detail" th:href="'..' + ${root.fullQualifiedName} + '/map.svg'">マップ</a> ]
-		</span>
+		[ <a href="detail.html" target="detail">概要</a> 
+		<span th:unless="${root.getParams('sz').isEmpty()}"> |
+		<a href="map.svg" target="detail" th:href="${tmplFunc.createMapPath(root)}">マップ</a></span> ]
 	</span>
 	<ul>
 		<li th:each="unit : ${root.subUnits}">

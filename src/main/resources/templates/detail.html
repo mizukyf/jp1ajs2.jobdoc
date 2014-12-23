@@ -73,7 +73,9 @@ td
 	</div>
 	
 	<div class="unit-info" th:each="unit : ${flattenedList}">
-		<h2><a name="/to/be/set" th:name="${unit.fullQualifiedName}" th:text="${unit.fullQualifiedName}">(full qualified name)</a></h2>
+		<h2><a name="/to/be/set" 
+		       th:name="${tmplFunc.createRelativeFqn(unit)}"
+		       th:text="${tmplFunc.createRelativeFqn(unit)}">(full qualified name)</a></h2>
 		<h3>ユニット属性パラメーター</h3>
 		<table class="unit-attr-params">
 			<thead>
@@ -110,7 +112,7 @@ td
 							<span th:text="${iterStat.last} ? ';' : ','">;</span>
 						</span>
 					</td>
-					<td th:text="${expl.explicate(p)}">(explication)</td>
+					<td th:text="${tmplFunc.explicate(p)}">(explication)</td>
 				</tr>
 			</tbody>
 		</table>
