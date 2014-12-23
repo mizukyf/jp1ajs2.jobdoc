@@ -68,6 +68,7 @@ public class SvgWriter {
 		resolver.setPrefix(TEMPLATE_PATH_PREFIX);
 		resolver.setSuffix(TEMPLATE_PATH_SUFFIX);
 		resolver.setTemplateMode(TEMPLATE_MODE);
+		resolver.setCharacterEncoding("utf-8");
 		engine.setTemplateResolver(resolver);
 		return engine;
 	}
