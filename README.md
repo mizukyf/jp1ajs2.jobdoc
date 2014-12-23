@@ -7,11 +7,14 @@
 適切なコマンドを設定して実行するとドキュメント化が行われます。
 
 ```
-$ java -jar jp1ajs2.jobdoc-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
+$ java -jar jp1ajs2.jobdoc-1.3.2-RELEASE-jar-with-dependencies.jar 
 usage: java -jar jp1ajs2.jobdoc.jar <options>
  -d <destination-directory-path>
                                                   ドキュメントを出力するディレクトリのパス（デフォ
                                                   ルトは"."）
+    --dry-run
+                                                  ユニット定義のパースとドキュメント化対象の特定ま
+                                                  で行うが実際のドキュメント化は行わない
  -s <source-file-path>                            読み取り対象のユニット定義ファイルのパス
     --source-file-charset <source-file-charset>
                                                   読み取り対象のユニット定義ファイルのキャラクタセ
