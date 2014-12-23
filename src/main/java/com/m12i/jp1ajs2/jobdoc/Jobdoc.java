@@ -115,7 +115,20 @@ public class Jobdoc {
 					logger.warn(fqn);
 				}
 			}
-			
+
+			logger.info("検索結果に名前の重複したユニットが存在しないかチェックします.");
+			final Map<String,Unit> removedUnits2 = trav.removeDuplicatedUnits(targets);
+
+			if (removedUnits2.isEmpty()) {
+				logger.info("名前の重複したユニットはありません.");
+			} else {
+				logger.warn("名前の重複したユニット数： {}", removedUnits2.size());
+				logger.warn("次のユニットは名前の重複したユニットとしてドキュメント化対象から除外されました：");
+				for (final String fqn : removedUnits2.keySet()) {
+					logger.warn(fqn);
+				}
+			}
+
 			// 対象ユニットが0の場合は警告終了
 			if (targets.isEmpty()) {
 				throw new JobdocWarning(Messages.TARGET_UNIT_IS_NOT_FOUND);

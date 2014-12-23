@@ -107,6 +107,39 @@ public class Traverser {
 	}
 	
 	/**
+	 * 名前重複したユニットを除去する.
+	 * 引数で指定されたマップの内容はこのメソッドの中で変更される。
+	 * 名前重複ユニットとして判断され除去されたユニットはこのメソッドの戻り値として得られる。
+	 * @param unitMap 処理対象のマップ
+	 * @return 除去されたユニットのみからなるマップ
+	 */
+	public Map<String, Unit> removeDuplicatedUnits(Map<String,Unit> unitMap) {
+		final Map<String,Unit> result = new HashMap<String,Unit> ();
+		final Map<String,Unit> removed = new HashMap<String,Unit> ();
+		outer:
+		for (final Unit u1 : unitMap.values()) {
+			final String u1name = u1.getName();
+			final int u1fqnLen = u1.getFullQualifiedName().split("/").length;
+			
+			for (final Unit u2 : unitMap.values()) {
+				if (u1 != u2) {
+					final String u2name = u2.getName();
+					final int u2fqnLen = u2.getFullQualifiedName().split("/").length;
+					
+					if (u1name.equals(u2name) && u1fqnLen > u2fqnLen) {
+						removed.put(u1.getFullQualifiedName(), u1);
+						continue outer;
+					}
+				}
+			}
+			result.put(u1.getFullQualifiedName(), u1);
+		}
+		unitMap.clear();
+		unitMap.putAll(result);
+		return removed;
+	}
+	
+	/**
 	 * 対象のユニットとその子孫ユニットからなるツリー構造の最大深度を計測する.
 	 * @param unit ユニット
 	 * @return 最大深度
