@@ -282,7 +282,15 @@ public class SvgWriter {
 		}
 	}
 	
+	/**
+	 * テンプレート内で使用するユーティリティ.
+	 */
 	public static final class TemplateFunctions {
+		/**
+		 * 当該ユニットがマップに表示すべきものかどうか判定する.
+		 * @param unit ユニット定義
+		 * @return 判定結果
+		 */
 		public boolean isViewable(final Unit unit) {
 			return unit.getType() != UnitType.ROOT_JOBNET_INVOKE_CONDITION
 					&& unit.getType() != UnitType.GROUP;
