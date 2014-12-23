@@ -43,7 +43,7 @@
 
 	<build>
 		<plugins>
-			<!-- コンパイラを1.7バージョンで動作させるための設定 -->
+			<!-- コンパイラを1.6バージョンで動作させるための設定 -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.2</version>
