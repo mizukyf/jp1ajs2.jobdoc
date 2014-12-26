@@ -1,9 +1,13 @@
 package com.m12i.jp1ajs2.jobdoc.service;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -166,15 +170,15 @@ public class HtmlWriter {
 		
 		// ドキュメントのレンダリング処理を行う
 		try {
-			final Writer index = new FileWriter(new File(baseDir, "index.html"));
+			final Writer index = makeWriter(baseDir, "index.html");
 			engine.process(INDEX_TEMPLATE_NAME, ctx, index);
 			index.close();
 			
-			final Writer tree = new FileWriter(new File(baseDir, "tree.html"));
+			final Writer tree = makeWriter(baseDir, "tree.html");
 			engine.process(TREE_TEMPLATE_NAME, ctx, tree);
 			tree.close();
 			
-			final Writer detail = new FileWriter(new File(baseDir, "detail.html"));
+			final Writer detail = makeWriter(baseDir, "detail.html");
 			engine.process(DETAIL_TEMPLATE_NAME, ctx, detail);
 			detail.close();
 			
@@ -182,6 +186,14 @@ public class HtmlWriter {
 			// IOエラーが発生した場合はアベンド
 			throw new JobdocError(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e);
 		}
+	}
+	
+	private Writer makeWriter(final File baseDir, final String fileName) throws FileNotFoundException {
+		return new BufferedWriter(
+				new OutputStreamWriter(
+						new FileOutputStream(
+								new File(baseDir, fileName)),
+								Charset.forName("utf-8")));
 	}
 	
 	/**

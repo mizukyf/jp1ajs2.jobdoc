@@ -1,9 +1,13 @@
 package com.m12i.jp1ajs2.jobdoc.service;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -122,7 +126,7 @@ public class SvgWriter {
 			
 			try {
 				// ライターを初期化
-				final Writer svgFile = new FileWriter(new File(baseDir, "map.svg"));
+				final Writer svgFile = makeWriter(baseDir, "map.svg");
 				// テンプレート・エンジンで処理を実施
 				engine.process("map",ctx, svgFile);
 				// ライターを閉じる
@@ -132,6 +136,14 @@ public class SvgWriter {
 				throw new JobdocError(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e);
 			}
 		}
+	}
+	
+	private Writer makeWriter(final File baseDir, final String fileName) throws FileNotFoundException {
+		return new BufferedWriter(
+				new OutputStreamWriter(
+						new FileOutputStream(
+								new File(baseDir, fileName)),
+								Charset.forName("utf-8")));
 	}
 	
 	/**
