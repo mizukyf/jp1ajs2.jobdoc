@@ -119,7 +119,7 @@ td
 		<h3>下位ユニット</h3>
 		<ul class="subunit-infos" th:unless="${unit.subUnits.isEmpty()}">
 			<li th:each="sub : ${unit.subUnits}">
-				<a href="#" target="detail" th:text="${sub.name}" th:href="'#' + ${sub.fullQualifiedName}">(subunit name)</a>
+				<a href="#" target="detail" th:text="${sub.name}" th:href="'#' + ${tmplFunc.createRelativeFqn(sub)}">(subunit name)</a>
 			</li>
 		</ul>
 		<p th:if="${unit.subUnits.isEmpty()}">（下位ユニットなし）</p>
