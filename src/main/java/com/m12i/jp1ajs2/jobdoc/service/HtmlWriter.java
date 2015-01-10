@@ -229,8 +229,6 @@ public class HtmlWriter {
 		 * @return マップの相対パス
 		 */
 		public String createMapPath(final Unit target) {
-			System.out.println(root.getFullQualifiedName());
-			System.out.println(target.getFullQualifiedName());
 			final int rootFqnLen = root.getFullQualifiedName().length();
 			final String relativePath = target.getFullQualifiedName().substring(rootFqnLen) + "/map.svg";
 			return relativePath.substring(1);
