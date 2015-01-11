@@ -29,7 +29,6 @@ import com.m12i.jp1ajs2.unitdef.Unit;
 import com.m12i.jp1ajs2.unitdef.MapSize;
 import com.m12i.jp1ajs2.unitdef.Params;
 import com.m12i.jp1ajs2.unitdef.UnitConnectionType;
-import com.m12i.jp1ajs2.unitdef.UnitType;
 import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
@@ -86,7 +85,6 @@ public class SvgWriter {
 		ctx.setVariable("applicationName", Jobdoc.APPLICATION_NAME);
 		ctx.setVariable("applicationVersion", Jobdoc.APPLICATION_VERSION);
 		ctx.setVariable("generatedAt", new Date());
-		ctx.setVariable("tmplFunc", new TemplateFunctions());
 		return ctx;
 	}
 	
@@ -99,6 +97,7 @@ public class SvgWriter {
 	public void renderSvg(final Unit root, final TemplateEngine engine, final Parameters params) {
 		// コンテキストを初期化
 		final Context ctx = this.makeContext();
+		ctx.setVariable("tmplFunc", new TemplateFunctions(params, root));
 		
 		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(root)) {
 			// マップサイズ情報を取得
@@ -128,7 +127,14 @@ public class SvgWriter {
 				// ライターを初期化
 				final Writer svgFile = makeWriter(baseDir, "map.svg");
 				// テンプレート・エンジンで処理を実施
-				engine.process("map",ctx, svgFile);
+				final String rendered = engine.process("map", ctx);
+				// Thymeleafではxlink:href属性を直接アサインできないので、
+				// 別属性名でアサインしレンダリング後に強引に置換する
+				final String replaced = rendered
+						.replaceAll("xlink:href=\"#\"", "")
+						.replaceAll("xlink-href=\"([^\"]*)\"", "xlink:href=\"$1\"");
+				// 置換した文字列をファイルに書き出す
+				svgFile.write(replaced);
 				// ライターを閉じる
 				svgFile.close();
 			} catch (final IOException e) {
@@ -292,21 +298,6 @@ public class SvgWriter {
 		@Override
 		public String toString() {
 			return String.format("Point(%s,%s)", x, y);
-		}
-	}
-	
-	/**
-	 * テンプレート内で使用するユーティリティ.
-	 */
-	public static final class TemplateFunctions {
-		/**
-		 * 当該ユニットがマップに表示すべきものかどうか判定する.
-		 * @param unit ユニット定義
-		 * @return 判定結果
-		 */
-		public boolean isViewable(final Unit unit) {
-			return unit.getType() != UnitType.ROOT_JOBNET_INVOKE_CONDITION
-					&& unit.getType() != UnitType.GROUP;
 		}
 	}
 }

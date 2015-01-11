@@ -16,6 +16,7 @@
     </defs>
 
     <g th:each="el : ${elements}">
+        <a xlink:href="#" th:attr="xlink-href=|detail.html#${tmplFunc.createRelativeFqn(el.unit)}|">
         <g th:if="${tmplFunc.isViewable(el.unit)} and ${el.unit.getParams('sz').isEmpty()}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
             <circle fill="#cf9" r="40.0" cx="40.0" cy="40.0"/>
@@ -45,6 +46,7 @@
             </text>
             <!--/*/ </th:block> /*/-->
         </g>
+        </a>
     </g>
 
     <g stroke-width="2" fill="none" th:unless="${#lists.isEmpty(arrowLines)}" th:each="al : ${arrowLines}">
