@@ -73,9 +73,14 @@ td
 	</div>
 	
 	<div class="unit-info" th:each="unit : ${flattenedList}">
-		<h2><a name="/to/be/set" 
+		<h2>
+			<a name="/to/be/set" 
 		       th:name="${tmplFunc.createRelativeFqn(unit)}"
-		       th:text="${tmplFunc.createRelativeFqn(unit)}">(full qualified name)</a></h2>
+		       th:text="${tmplFunc.createRelativeFqn(unit)}">(full qualified name)</a>
+		    <span th:unless="${unit.getParams('sz').isEmpty()}">
+				[ <a href="map.svg" target="detail" th:href="${tmplFunc.createMapPath(unit)}">マップ</a> ]
+			</span>
+		</h2>
 		<h3>ユニット属性パラメーター</h3>
 		<table class="unit-attr-params">
 			<thead>
