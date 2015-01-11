@@ -40,7 +40,7 @@ td
 		<table>
 			<tbody>
 				<tr>
-					<th>コメント</th><td th:text="${root.getParams('cm')[0].value}">(comment)</td>
+					<th>コメント</th><td th:text="${root.comment.isEmpty()} ? '(指定なし)' : ${root.comment.get()}">(comment)</td>
 				</tr>
 				<tr>
 					<th>構成要素数</th><td th:text="${flattenedList.size()} - 1">(subunit count)</td>
@@ -93,13 +93,13 @@ td
 					<td>ユニット名</td><td th:text="${unit.name}">(unit name)</td>
 				</tr>
 				<tr>
-					<td>許可モード</td><td th:text="${unit.permissionMode.isOne()} ? ${unit.permissionMode.get()} : '--'">(permission mode)</td>
+					<td>許可モード</td><td th:text="${unit.permissionMode.isOne()} ? ${unit.permissionMode.get()} : '(指定なし)'">(permission mode)</td>
 				</tr>
 				<tr>
-					<td>ユニット名</td><td th:text="${unit.ownerName.isOne()} ? ${unit.ownerName.get()} : '--'">(owner name)</td>
+					<td>ユニット名</td><td th:text="${unit.ownerName.isOne()} ? ${unit.ownerName.get()} : '(指定なし)'">(owner name)</td>
 				</tr>
 				<tr>
-					<td>ユニット名</td><td th:text="${unit.resourceGroupName.isOne()} ? ${unit.resourceGroupName.get()} : '--'">(resource group name)</td>
+					<td>ユニット名</td><td th:text="${unit.resourceGroupName.isOne()} ? ${unit.resourceGroupName.get()} : '(指定なし)'">(resource group name)</td>
 				</tr>
 			</tbody>
 		</table>
