@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ユニット定義一覧</title>
+<style type="text/css">
+table,
+th,
+td
+{
+	border: 1px solid #000;
+	border-collapse: collapse;
+}
+table
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+th,
+td
+{
+	padding: 0.5ex;
+}
+</style>
+</head>
+<body>
+	<h1>ユニット定義一覧</h1>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>ユニット名</th>
+				<th>コメント</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="unit : ${list}">
+				<td><a th:href="${unit.name} + '/index.html'" th:text="${unit.name}">(unit name)</a></td>
+				<td th:text="${unit.comment.isEmpty()} ? '(指定なし)' : ${unit.comment.get()}">(unit comment)</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</body>
+</html>

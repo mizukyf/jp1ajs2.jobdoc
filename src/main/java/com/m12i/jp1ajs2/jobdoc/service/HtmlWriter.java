@@ -55,6 +55,10 @@ public class HtmlWriter {
 	 * フレームセット（親画面）のテンプレート名.
 	 */
 	private static final String INDEX_TEMPLATE_NAME = "index";
+	/**
+	 * ユニット定義一覧のテンプレート名.
+	 */
+	private static final String UNIT_LIST_TEMPLATE_NAME = "unit_list";
 	
 	/**
 	 * Thymeleafテンプレート・エンジンを初期化する.
@@ -180,6 +184,23 @@ public class HtmlWriter {
 			final Writer detail = makeWriter(baseDir, "detail.html");
 			engine.process(DETAIL_TEMPLATE_NAME, ctx, detail);
 			detail.close();
+			
+		} catch (final IOException e) {
+			// IOエラーが発生した場合はアベンド
+			throw new JobdocError(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e);
+		}
+	}
+	
+	public void renderHtmlList(final List<Unit> list, final TemplateEngine engine, final Parameters params) {
+		final File baseDir = params.getDestinationDirectory();
+		// コンテキストを初期化
+		final Context ctx = makeContext();
+		ctx.setVariable("list", list);
+		// ドキュメントのレンダリング処理を行う
+		try {
+			final Writer index = makeWriter(baseDir, "unit_list.html");
+			engine.process(UNIT_LIST_TEMPLATE_NAME, ctx, index);
+			index.close();
 			
 		} catch (final IOException e) {
 			// IOエラーが発生した場合はアベンド

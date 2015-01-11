@@ -1,5 +1,9 @@
 package com.m12i.jp1ajs2.jobdoc;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
@@ -159,6 +163,16 @@ public class Jobdoc {
 				svg.renderSvg(e.getValue(), svgEngine, params);
 			}
 			
+			final List<Unit> targetList = new ArrayList<Unit>();
+			targetList.addAll(targets.values());
+			Collections.sort(targetList, new Comparator<Unit>() {
+				@Override
+				public int compare(Unit o1, Unit o2) {
+					return o1.getName().compareTo(o2.getName());
+				}
+			});
+			
+			html.renderHtmlList(targetList, htmlEngine, params);
 		} catch (final JobdocError e1) {
 			// 異常終了（アプリケーション・エラーの場合）
 			logger.error(Messages.APPLICATION_ERROR_HAS_OCCURED, e1);
