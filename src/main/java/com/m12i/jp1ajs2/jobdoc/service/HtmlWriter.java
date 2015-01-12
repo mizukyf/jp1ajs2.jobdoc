@@ -191,6 +191,12 @@ public class HtmlWriter {
 		}
 	}
 	
+	/**
+	 * ドキュメント化したユニット定義の一覧のページをレンダリングする.
+	 * @param list 出力対象ユニット定義のリスト
+	 * @param engine テンプレート・エンジン
+	 * @param params パラメータ
+	 */
 	public void renderHtmlList(final List<Unit> list, final TemplateEngine engine, final Parameters params) {
 		final File baseDir = params.getDestinationDirectory();
 		// コンテキストを初期化
@@ -208,6 +214,13 @@ public class HtmlWriter {
 		}
 	}
 	
+	/**
+	 * 指定されたパス情報をもとにライター・オブジェクトを生成して返す.
+	 * @param baseDir ベース・ディレクトリのパス
+	 * @param fileName ファイル名
+	 * @return ライター
+	 * @throws FileNotFoundException ライター生成中にエラーが発生した場合
+	 */
 	private Writer makeWriter(final File baseDir, final String fileName) throws FileNotFoundException {
 		return new BufferedWriter(
 				new OutputStreamWriter(

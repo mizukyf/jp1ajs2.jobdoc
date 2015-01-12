@@ -4,7 +4,7 @@
 
 	<groupId>com.m12i.jp1ajs2.jobdoc</groupId>
 	<artifactId>jp1ajs2.jobdoc</artifactId>
-	<version>1.4.0-RELEASE</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<name>JP1/AJS2 Jobdoc</name>
 
 	<properties>
@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>com.m12i.jp1ajs2.unitdef</groupId>
 			<artifactId>jp1ajs2.unitdef</artifactId>
-			<version>1.4.3-RELEASE</version>
+			<version>1.5.0-RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf</groupId>

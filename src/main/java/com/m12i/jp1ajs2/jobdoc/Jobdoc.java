@@ -27,7 +27,7 @@ public class Jobdoc {
 	/**
 	 * アプリケーションのバージョン名.
 	 */
-	public static final String APPLICATION_VERSION = "1.1.0";
+	public static final String APPLICATION_VERSION = "1.4.1";
 	/**
 	 * 正常終了時のExit Code.
 	 */
@@ -116,7 +116,7 @@ public class Jobdoc {
 				logger.warn("ネストしたユニット数： {}", removedUnits.size());
 				logger.warn("次のユニットはネストしたユニットとしてドキュメント化対象から除外されました：");
 				for (final String fqn : removedUnits.keySet()) {
-					logger.warn(fqn);
+					logger.warn("- " + fqn);
 				}
 			}
 
@@ -129,7 +129,7 @@ public class Jobdoc {
 				logger.warn("名前の重複したユニット数： {}", removedUnits2.size());
 				logger.warn("次のユニットは名前の重複したユニットとしてドキュメント化対象から除外されました：");
 				for (final String fqn : removedUnits2.keySet()) {
-					logger.warn(fqn);
+					logger.warn("- " + fqn);
 				}
 			}
 
@@ -141,7 +141,7 @@ public class Jobdoc {
 			logger.info("ドキュメント化対象ユニット数： {}", targets.size());
 			logger.info("次のユニットがドキュメント化対象となります：");
 			for (final String fqn : targets.keySet()) {
-				logger.info(fqn);
+				logger.info("- " + fqn);
 			}
 			
 			if (params.getDryRun()) {
@@ -172,7 +172,9 @@ public class Jobdoc {
 				}
 			});
 			
+			logger.info("ドキュメント化したユニットの一覧を出力します.");
 			html.renderHtmlList(targetList, htmlEngine, params);
+			
 		} catch (final JobdocError e1) {
 			// 異常終了（アプリケーション・エラーの場合）
 			logger.error(Messages.APPLICATION_ERROR_HAS_OCCURED, e1);
