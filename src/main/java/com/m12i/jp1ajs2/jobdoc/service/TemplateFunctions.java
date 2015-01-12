@@ -42,6 +42,17 @@ public final class TemplateFunctions {
 		final String relativePath = target.getFullQualifiedName().substring(rootFqnLen) + "/map.svg";
 		return relativePath.substring(1);
 	}
+	public String createDetailPathFromMap(final Unit target) {
+		final String relativeFqn = createRelativeFqn(target);
+		final int n = relativeFqn.split("/").length - 3;
+		final StringBuilder buff = new StringBuilder();
+		for (int i = 0; i < n; i ++) {
+			buff.append("../");
+		}
+		buff.append("detail.html#");
+		buff.append(relativeFqn);
+		return buff.toString();
+	}
 	/**
 	 * ドキュメント化対象ユニット定義を基底とするユニット定義完全名を生成する.
 	 * @param target ドキュメント化対象もしくはその子孫にあたり直近ツリー要素出力の対象となっているユニット定義
