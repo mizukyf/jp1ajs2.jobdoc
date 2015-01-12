@@ -4,7 +4,7 @@
 
 	<groupId>com.m12i.jp1ajs2.jobdoc</groupId>
 	<artifactId>jp1ajs2.jobdoc</artifactId>
-	<version>1.4.2-RELEASE</version>
+	<version>1.4.3-SNAPSHOT</version>
 	<name>JP1/AJS2 Jobdoc</name>
 
 	<properties>
