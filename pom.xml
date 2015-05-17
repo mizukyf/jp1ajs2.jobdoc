@@ -4,7 +4,7 @@
 
 	<groupId>org.doogwood.jp1ajs2.jobdoc</groupId>
 	<artifactId>jp1ajs2.jobdoc</artifactId>
-	<version>1.5.0-RELEASE</version>
+	<version>1.5.1-RELEASE</version>
 	<name>JP1/AJS2 Jobdoc</name>
 
 	<properties>
@@ -60,7 +60,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.m12i.jp1ajs2.jobdoc.Main</mainClass>
+							<mainClass>org.doogwood.jp1ajs2.jobdoc.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -72,7 +72,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.m12i.jp1ajs2.jobdoc.Main</mainClass>
+							<mainClass>org.doogwood.jp1ajs2.jobdoc.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -80,7 +80,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>com.m12i.jp1ajs2.jobdoc.Main</mainClass>
+							<mainClass>org.doogwood.jp1ajs2.jobdoc.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
