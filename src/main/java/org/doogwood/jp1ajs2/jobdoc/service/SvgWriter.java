@@ -192,8 +192,10 @@ public class SvgWriter {
 			// ぞれぞれの座標に円形のマージンをとるかたちで、関連線の始点・終点の座標を算出
 			final Point marginedTo = takeMarginCircularly(from, to, MARGIN_R);
 			final Point marginedFrom = takeMarginCircularly(to, from, MARGIN_R);
+			
 			// 関連線の情報をリストに追加
-			lines.add(new ArrowLine(marginedFrom, marginedTo, twoHeaded));
+			lines.add(new ArrowLine(marginedFrom, marginedTo, twoHeaded, 
+					ar.getTo().getType().isRecoveryType()));
 		}
 		
 		return lines;
@@ -242,10 +244,12 @@ public class SvgWriter {
 		private final Point from;
 		private final Point to;
 		private final boolean twoHeaded;
-		private ArrowLine(final Point from, final Point to, final boolean twoHeaded){
+		private final boolean forRecovery;
+		private ArrowLine(final Point from, final Point to, final boolean twoHeaded, final boolean forRecovery){
 			this.from = from;
 			this.to = to;
 			this.twoHeaded = twoHeaded;
+			this.forRecovery = forRecovery;
 		}
 		/**
 		 * 先行ユニットの座標情報を取得する.
@@ -265,8 +269,15 @@ public class SvgWriter {
 		 * マーカーが両端に付くかどうかを判定する.
 		 * @return 判定結果
 		 */
-		public boolean getTwoHeaded() {
+		public boolean isTwoHeaded() {
 			return twoHeaded;
+		}
+		/**
+		 * 後続ユニットがリカバリージョブであるかどうかを判定する.
+		 * @return 判定結果
+		 */
+		public boolean isForRecovery() {
+			return forRecovery;
 		}
 	}
 	

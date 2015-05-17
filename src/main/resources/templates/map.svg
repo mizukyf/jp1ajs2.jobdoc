@@ -7,6 +7,9 @@
         <marker id="ar-seq-end" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" viewBox="0 0 10 10" refX="5" refY="5" orient="auto">
             <polygon points="5,0 5,10 10,5 " fill="black"/>
         </marker>
+        <marker id="ar-seq-r-end" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" viewBox="0 0 10 10" refX="5" refY="5" orient="auto">
+            <polygon points="5,0 5,10 10,5 " fill="red"/>
+        </marker>
         <marker id="ar-con-end" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" viewBox="0 0 10 10" refX="5" refY="5" orient="auto">
             <polygon points="5,0 5,10 10,5 " fill="blue"/>
         </marker>
@@ -20,34 +23,48 @@
         <a xlink:href="#" th:attr="xlink-href=|${tmplFunc.createDetailPathFromMap(el.unit)}|">
         <g th:if="${el.unit.getParams('sz').isEmpty()}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
-            <circle fill="#cf9" r="40.0" cx="40.0" cy="40.0"/>
+            <circle fill="#fff" stroke="#000" stroke-width="2" r="40.0" cx="40.0" cy="40.0"/>
             <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                  th:text="${el.unit.name}">UNIT_NAME_XXXX</text>
             <!--/*/ <th:block th:unless="${el.unit.comment.isEmpty()}"> /*/-->
             <text x="40" y="56" font-size="10" dominant-baseline="middle" text-anchor="middle"
                 th:unless="${el.unit.comment.isEmpty()}" th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"
-                       th:text="${ln}" th:attr="y=|${iterStat.index * 12 + 56}|">
+                style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
+                th:text="${ln}" th:attr="y=|${iterStat.index * 12 + 56}|">
                 コメント
             </text>
+           <rect th:if="${el.unit.type.recoveryType}" 
+                 x="68" y="20" fill="red" width="12" height="12"/>
+           <text th:if="${el.unit.type.recoveryType}" 
+                 x="74" y="26" font-size="10" fill="#fff"
+                 dominant-baseline="middle" text-anchor="middle" font-weight="bold">R</text>
             <!--/*/ </th:block> /*/-->
         </g>
         <g th:if="${not el.unit.getParams('sz').isEmpty()}"
            id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
-            <line y2="64.0" stroke-width="8.0" x1="40.0" x2="16.0" stroke="#cf9" y1="16.0"/>
-            <line y2="64.0" stroke-width="8.0" x1="16.0" x2="64.0" stroke="#cf9" y1="64.0"/>
-            <line y2="16.0" stroke-width="8.0" x1="64.0" x2="40.0" stroke="#cf9" y1="64.0"/>
-            <circle fill="#cf9" r="16.0" cx="40.0" cy="16.0"/>
-            <circle fill="#cf9" r="16.0" cx="16.0" cy="64.0"/>
-            <circle fill="#cf9" r="16.0" cx="64.0" cy="64.0"/>
+            <line y2="64.0" stroke-width="2.0" x1="40.0" x2="16.0" stroke="#000" y1="16.0"/>
+            <line y2="64.0" stroke-width="2.0" x1="16.0" x2="64.0" stroke="#000" y1="64.0"/>
+            <line y2="16.0" stroke-width="2.0" x1="64.0" x2="40.0" stroke="#000" y1="64.0"/>
+            <circle fill="#fff" stroke="#000" stroke-width="2" r="16.0" cx="40.0" cy="16.0"/>
+            <circle fill="#fff" stroke="#000" stroke-width="2" r="16.0" cx="16.0" cy="64.0"/>
+            <circle fill="#fff" stroke="#000" stroke-width="2" r="16.0" cx="64.0" cy="64.0"/>
             <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
+                style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                 th:text="${el.unit.name}">UNIT_NAME_XXXX</text>
             <!--/*/ <th:block th:unless="${el.unit.comment.isEmpty()}"> /*/-->
             <text x="40" y="56" font-size="10" dominant-baseline="middle" text-anchor="middle"
+                style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                 th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"
                 th:text="${ln}" th:attr="y=|${iterStat.index * 12 + 56}|">
                 コメント
             </text>
+           <rect th:if="${el.unit.type.recoveryType}" 
+                 x="68" y="20" fill="red" width="12" height="12"/>
+           <text th:if="${el.unit.type.recoveryType}" 
+                 x="74" y="26" font-size="10" fill="#fff"
+                 dominant-baseline="middle" text-anchor="middle" font-weight="bold">R</text>
             <!--/*/ </th:block> /*/-->
         </g>
         </a>
@@ -55,7 +72,8 @@
     </g>
 
     <g stroke-width="2" fill="none" th:unless="${#lists.isEmpty(arrowLines)}" th:each="al : ${arrowLines}">
-        <path stroke="blue" th:if="${al.twoHeaded}" d="M100,60l100,0" marker-start="url(#ar-con-start)" marker-end="url(#ar-con-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
-        <path stroke="black" th:unless="${al.twoHeaded}" d="M100,60l100,0" marker-end="url(#ar-seq-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
+        <path th:if="${al.twoHeaded}" stroke="blue" d="M100,60l100,0" marker-start="url(#ar-con-start)" marker-end="url(#ar-con-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
+        <path th:if="(!${al.twoHeaded}) and (!${al.forRecovery})" stroke="black" d="M100,60l100,0" marker-end="url(#ar-seq-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
+        <path th:if="(!${al.twoHeaded}) and ${al.forRecovery}" stroke="red" d="M100,60l100,0" marker-end="url(#ar-seq-r-end)" th:attr="d=|M${al.from.x},${al.from.y}L${al.to.x},${al.to.y}|" />
     </g>
 </svg>
