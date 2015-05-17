@@ -1,10 +1,10 @@
-package com.m12i.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc.service;
 
-import com.m12i.jp1ajs2.unitdef.FileWatchingCondition;
-import com.m12i.jp1ajs2.unitdef.HoldAttrType;
-import com.m12i.jp1ajs2.unitdef.Param;
-import com.m12i.jp1ajs2.unitdef.Params;
-import com.m12i.jp1ajs2.unitdef.UnitType;
+import org.doogwood.jp1ajs2.unitdef.FileWatchingCondition;
+import org.doogwood.jp1ajs2.unitdef.HoldAttrType;
+import org.doogwood.jp1ajs2.unitdef.Param;
+import org.doogwood.jp1ajs2.unitdef.Params;
+import org.doogwood.jp1ajs2.unitdef.UnitType;
 
 /**
  * ユニット定義パラメータ値の解説情報を提供するオブジェクト.

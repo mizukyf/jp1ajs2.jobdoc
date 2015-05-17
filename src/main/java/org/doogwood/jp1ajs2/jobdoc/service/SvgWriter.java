@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc.service;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,22 +14,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.doogwood.jp1ajs2.jobdoc.Jobdoc;
+import org.doogwood.jp1ajs2.jobdoc.JobdocError;
+import org.doogwood.jp1ajs2.jobdoc.Messages;
+import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.unitdef.AnteroposteriorRelationship;
+import org.doogwood.jp1ajs2.unitdef.Element;
+import org.doogwood.jp1ajs2.unitdef.MapSize;
+import org.doogwood.jp1ajs2.unitdef.Params;
+import org.doogwood.jp1ajs2.unitdef.Unit;
+import org.doogwood.jp1ajs2.unitdef.UnitConnectionType;
+import org.doogwood.jp1ajs2.unitdef.util.Maybe;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
-
-import com.m12i.jp1ajs2.jobdoc.Jobdoc;
-import com.m12i.jp1ajs2.jobdoc.JobdocError;
-import com.m12i.jp1ajs2.jobdoc.Messages;
-import com.m12i.jp1ajs2.jobdoc.Parameters;
-import com.m12i.jp1ajs2.unitdef.AnteroposteriorRelationship;
-import com.m12i.jp1ajs2.unitdef.Element;
-import com.m12i.jp1ajs2.unitdef.Unit;
-import com.m12i.jp1ajs2.unitdef.MapSize;
-import com.m12i.jp1ajs2.unitdef.Params;
-import com.m12i.jp1ajs2.unitdef.UnitConnectionType;
-import com.m12i.jp1ajs2.unitdef.util.Maybe;
 
 public class SvgWriter {
 	

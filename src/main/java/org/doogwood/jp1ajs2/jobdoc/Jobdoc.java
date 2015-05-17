@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc;
+package org.doogwood.jp1ajs2.jobdoc;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,16 +8,15 @@ import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
+import org.doogwood.jp1ajs2.jobdoc.service.Configurer;
+import org.doogwood.jp1ajs2.jobdoc.service.HtmlWriter;
+import org.doogwood.jp1ajs2.jobdoc.service.Parser;
+import org.doogwood.jp1ajs2.jobdoc.service.ServiceProvider;
+import org.doogwood.jp1ajs2.jobdoc.service.SvgWriter;
+import org.doogwood.jp1ajs2.jobdoc.service.Traverser;
+import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.slf4j.Logger;
 import org.thymeleaf.TemplateEngine;
-
-import com.m12i.jp1ajs2.jobdoc.service.Configurer;
-import com.m12i.jp1ajs2.jobdoc.service.ServiceProvider;
-import com.m12i.jp1ajs2.jobdoc.service.Parser;
-import com.m12i.jp1ajs2.jobdoc.service.HtmlWriter;
-import com.m12i.jp1ajs2.jobdoc.service.SvgWriter;
-import com.m12i.jp1ajs2.jobdoc.service.Traverser;
-import com.m12i.jp1ajs2.unitdef.Unit;
 
 public class Jobdoc {
 	/**

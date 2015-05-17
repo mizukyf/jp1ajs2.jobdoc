@@ -1,9 +1,8 @@
-package com.m12i.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc.service;
 
+import org.doogwood.jp1ajs2.jobdoc.Jobdoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.m12i.jp1ajs2.jobdoc.Jobdoc;
 
 public final class ServiceProvider {
 	private ServiceProvider() {}

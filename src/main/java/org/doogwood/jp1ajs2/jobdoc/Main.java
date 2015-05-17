@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc;
+package org.doogwood.jp1ajs2.jobdoc;
 
 public final class Main {
 	public static void main(String[] args) {

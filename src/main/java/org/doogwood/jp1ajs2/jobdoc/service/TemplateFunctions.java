@@ -1,9 +1,9 @@
-package com.m12i.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc.service;
 
-import com.m12i.jp1ajs2.jobdoc.Parameters;
-import com.m12i.jp1ajs2.unitdef.Param;
-import com.m12i.jp1ajs2.unitdef.Unit;
-import com.m12i.jp1ajs2.unitdef.UnitType;
+import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.unitdef.Param;
+import org.doogwood.jp1ajs2.unitdef.Unit;
+import org.doogwood.jp1ajs2.unitdef.UnitType;
 
 /**
  * テンプレート内で使用するユーティリティ.

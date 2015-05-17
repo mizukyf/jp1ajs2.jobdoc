@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc.service;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -12,10 +12,9 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-
-import com.m12i.jp1ajs2.jobdoc.JobdocError;
-import com.m12i.jp1ajs2.jobdoc.Messages;
-import com.m12i.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.jobdoc.JobdocError;
+import org.doogwood.jp1ajs2.jobdoc.Messages;
+import org.doogwood.jp1ajs2.jobdoc.Parameters;
 
 /**
  * アプリケーションのコマンドライン・オプションの定義やパースを担当するオブジェクト.

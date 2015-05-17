@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc;
+package org.doogwood.jp1ajs2.jobdoc;
 
 /**
  * 警告終了のトリガーとなる例外オブジェクト.

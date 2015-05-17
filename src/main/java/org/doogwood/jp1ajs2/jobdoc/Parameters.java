@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc;
+package org.doogwood.jp1ajs2.jobdoc;
 
 import java.io.File;
 import java.nio.charset.Charset;

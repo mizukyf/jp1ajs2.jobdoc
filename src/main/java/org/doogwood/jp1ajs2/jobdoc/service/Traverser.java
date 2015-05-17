@@ -1,4 +1,4 @@
-package com.m12i.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import com.m12i.jp1ajs2.jobdoc.Parameters;
-import com.m12i.jp1ajs2.unitdef.Unit;
-import com.m12i.jp1ajs2.unitdef.MapSize;
-import com.m12i.jp1ajs2.unitdef.Params;
-import com.m12i.jp1ajs2.unitdef.Units;
-import com.m12i.jp1ajs2.unitdef.util.Maybe;
+import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.unitdef.MapSize;
+import org.doogwood.jp1ajs2.unitdef.Params;
+import org.doogwood.jp1ajs2.unitdef.Unit;
+import org.doogwood.jp1ajs2.unitdef.Units;
+import org.doogwood.jp1ajs2.unitdef.util.Maybe;
 
 /**
  * ユニット定義をもとに各種情報を収集するオブジェクト.
