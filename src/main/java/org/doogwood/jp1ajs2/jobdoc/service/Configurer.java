@@ -6,12 +6,12 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.doogwood.jp1ajs2.jobdoc.JobdocError;
 import org.doogwood.jp1ajs2.jobdoc.Messages;
 import org.doogwood.jp1ajs2.jobdoc.Parameters;
@@ -21,72 +21,71 @@ import org.doogwood.jp1ajs2.jobdoc.Parameters;
  */
 public class Configurer {
 	
-	private static final char OPTION_NAME_FOR_SOURCE_FILE_PATH = 's';
-	private static final char OPTION_NAME_FOR_DEST_DIR_PATH = 'd';
+	private static final String OPTION_NAME_FOR_SOURCE_FILE_PATH = "s";
+	private static final String OPTION_NAME_FOR_DEST_DIR_PATH = "d";
 	private static final String OPTION_NAME_FOR_SOURCE_FILE_CHARSER = "source-file-charset";
-	private static final char OPTION_NAME_FOR_TARGET_UNIT_NAME = 't';
-	private static final char OPTION_NAME_FOR_TARGET_UNIT_NAME_PATTERN = 'T';
+	private static final String OPTION_NAME_FOR_TARGET_UNIT_NAME = "t";
+	private static final String OPTION_NAME_FOR_TARGET_UNIT_NAME_PATTERN = "T";
 	private static final String OPTION_NAME_FOR_DRY_RUN = "dry-run";
 	
 	/**
 	 * コマンドライン・オプションの定義を行う.
 	 * @return コマンドライン・オプション定義情報
 	 */
-	@SuppressWarnings("static-access")
 	public Options defineOptions() {
 		final Options ops = new Options();
 		
-		ops.addOption(OptionBuilder
-				.hasArg(true)
-				.isRequired(true)
-				.withDescription("読み取り対象のユニット定義ファイルのパス")
-				.withArgName("source-file-path")
-				.create(OPTION_NAME_FOR_SOURCE_FILE_PATH));
+		ops.addOption(Option.builder(OPTION_NAME_FOR_SOURCE_FILE_PATH)
+				.hasArg()
+				.required()
+				.desc("読み取り対象のユニット定義ファイルのパス")
+				.argName("source-file-path")
+				.build());
 		
-		ops.addOption(OptionBuilder
-				.hasArg(true)
-				.isRequired(false)
-				.withDescription("読み取り対象のユニット定義ファイルのキャラクタセット（デフォルトは\"Windows-31J\"）")
-				.withArgName("source-file-charset")
-				.withLongOpt(OPTION_NAME_FOR_SOURCE_FILE_CHARSER)
-				.create());
+		ops.addOption(Option.builder()
+				.hasArg()
+				.required(false)
+				.desc("読み取り対象のユニット定義ファイルのキャラクタセット（デフォルトは\"Windows-31J\"）")
+				.argName("source-file-charset")
+				.longOpt(OPTION_NAME_FOR_SOURCE_FILE_CHARSER)
+				.build());
 		
-		ops.addOption(OptionBuilder
-				.hasArg(true)
-				.isRequired(false)
-				.withDescription("ドキュメントを出力するディレクトリのパス（デフォルトは\".\"）")
-				.withArgName("destination-directory-path")
-				.create(OPTION_NAME_FOR_DEST_DIR_PATH));
+		ops.addOption(Option.builder(OPTION_NAME_FOR_DEST_DIR_PATH)
+				.hasArg()
+				.required(false)
+				.desc("ドキュメントを出力するディレクトリのパス（デフォルトは\".\"）")
+				.argName("destination-directory-path")
+				.build());
 		
 		final OptionGroup og = new OptionGroup();
 		og.setRequired(true);
-		og.addOption(OptionBuilder
-				.hasArg(true)
-				.isRequired(false)
-				.withDescription("ドキュメント化する対象のユニット名")
-				.withArgName("target-unit-name")
-				.create(OPTION_NAME_FOR_TARGET_UNIT_NAME));
-		og.addOption(OptionBuilder
-				.hasArg(true)
-				.isRequired(false)
-				.withDescription("ドキュメント化する対象のユニット名の正規表現パターン")
-				.withArgName("target-unit-name-pattern")
-				.create(OPTION_NAME_FOR_TARGET_UNIT_NAME_PATTERN));
+		og.addOption(Option.builder(OPTION_NAME_FOR_TARGET_UNIT_NAME)
+				.hasArg()
+				.required(false)
+				.desc("ドキュメント化する対象のユニット名")
+				.argName("target-unit-name")
+				.build());
+		og.addOption(Option.builder(OPTION_NAME_FOR_TARGET_UNIT_NAME_PATTERN)
+				.hasArg()
+				.required(false)
+				.desc("ドキュメント化する対象のユニット名の正規表現パターン")
+				.argName("target-unit-name-pattern")
+				.build());
 		ops.addOptionGroup(og);
 		
-		ops.addOption(OptionBuilder
-				.hasArg(false)
-				.isRequired(false)
-				.withDescription("ユニット定義のパースとドキュメント化対象の特定まで行うが実際のドキュメント化は行わない")
-				.withLongOpt(OPTION_NAME_FOR_DRY_RUN)
-				.create());
+		ops.addOption(Option.builder()
+				.hasArg()
+				.required(false)
+				.desc("ユニット定義のパースとドキュメント化対象の特定まで行うが実際のドキュメント化は行わない")
+				.longOpt(OPTION_NAME_FOR_DRY_RUN)
+				.build());
 		
 		return ops;
 	}
 	
 	public CommandLine parseOptions(final Options ops, final String[] args) {
 		try {
-			return new PosixParser().parse(ops, args);
+			return new DefaultParser().parse(ops, args);
 		} catch (final ParseException e) {
 			throw new JobdocError(Messages.SYNTAX_ERROR_FOUND_IN_COMMANDLINE_OPTIONS, e);
 		}
