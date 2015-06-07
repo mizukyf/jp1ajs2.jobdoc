@@ -26,7 +26,7 @@ public class Jobdoc {
 	/**
 	 * アプリケーションのバージョン名.
 	 */
-	public static final String APPLICATION_VERSION = "1.4.1";
+	public static final String APPLICATION_VERSION = "1.5.2";
 	/**
 	 * 正常終了時のExit Code.
 	 */
