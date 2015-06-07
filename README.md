@@ -1,14 +1,14 @@
-# jp1ajs2.jobdoc
+# jp1ajs2-jobdoc
 
-`jp1ajs2.jobdoc`はJP1/AJS2ユニット定義ファイルをパースしてドキュメント化するツールです。
+`jp1ajs2-jobdoc`はJP1/AJS2ユニット定義ファイルをパースしてドキュメント化するツールです。
 現在のところドキュメントの形式はHTMLファイルのみに限定されています。
 
-`java -jar jp1ajs2.jobdoc-(version).jar`コマンドをコマンドライン引数なしに実行するとUSAGEが表示されます。
+`java -jar jp1ajs2-jobdoc-(version).jar`コマンドをコマンドライン引数なしに実行するとUSAGEが表示されます。
 適切なコマンドを設定して実行するとドキュメント化が行われます。
 
 ```
-$ java -jar jp1ajs2.jobdoc-1.3.2-RELEASE-jar-with-dependencies.jar 
-usage: java -jar jp1ajs2.jobdoc.jar <options>
+$ java -jar jp1ajs2-jobdoc-1.5.2-RELEASE-jar-with-dependencies.jar 
+usage: java -jar jp1ajs2-jobdoc.jar <options>
  -d <destination-directory-path>
                                                   ドキュメントを出力するディレクトリのパス（デフォ
                                                   ルトは"."）
