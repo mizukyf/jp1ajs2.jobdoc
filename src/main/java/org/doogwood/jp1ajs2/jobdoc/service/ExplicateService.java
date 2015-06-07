@@ -5,11 +5,13 @@ import org.doogwood.jp1ajs2.unitdef.HoldAttrType;
 import org.doogwood.jp1ajs2.unitdef.Param;
 import org.doogwood.jp1ajs2.unitdef.Params;
 import org.doogwood.jp1ajs2.unitdef.UnitType;
+import org.springframework.stereotype.Service;
 
 /**
  * ユニット定義パラメータ値の解説情報を提供するオブジェクト.
  */
-public class Explicator {
+@Service
+public class ExplicateService {
 	
 	private static final String UNIT_TYPE_IS_A1 = "ユニット種別は`%1$s`";
 	private static final String UNIT_COMMENT_IS_A1 = "コメントは`%1$s`";

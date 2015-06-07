@@ -18,6 +18,7 @@ import org.doogwood.jp1ajs2.jobdoc.Jobdoc;
 import org.doogwood.jp1ajs2.jobdoc.JobdocError;
 import org.doogwood.jp1ajs2.jobdoc.Messages;
 import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.jobdoc.TemplateFunctions;
 import org.doogwood.jp1ajs2.unitdef.AnteroposteriorRelationship;
 import org.doogwood.jp1ajs2.unitdef.Element;
 import org.doogwood.jp1ajs2.unitdef.MapSize;
@@ -25,13 +26,19 @@ import org.doogwood.jp1ajs2.unitdef.Params;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.UnitConnectionType;
 import org.doogwood.jp1ajs2.unitdef.util.Maybe;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
-public class SvgWriter {
-	
+@Service
+public class SvgRenderService {
+	@Autowired
+	private TraverseService trav;
+	@Autowired
+	private ExplicateService expl;
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
 	 */
@@ -96,9 +103,9 @@ public class SvgWriter {
 	public void renderSvg(final Unit root, final TemplateEngine engine, final Parameters params) {
 		// コンテキストを初期化
 		final Context ctx = this.makeContext();
-		ctx.setVariable("tmplFunc", new TemplateFunctions(params, root));
+		ctx.setVariable("tmplFunc", new TemplateFunctions(params, root, expl));
 		
-		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(root)) {
+		for (final Unit u : trav.makeFlattenedUnitList(root)) {
 			// マップサイズ情報を取得
 			final Maybe<MapSize> size = Params.getMapSize(u);
 
@@ -172,7 +179,7 @@ public class SvgWriter {
 	 */
 	private List<ArrowLine> makeArrowLines(List<Element> els, final List<AnteroposteriorRelationship> ars) {
 		final List<ArrowLine> lines = new ArrayList<ArrowLine>();
-		final Map<String, Point> cache = new HashMap<String, SvgWriter.Point>();
+		final Map<String, Point> cache = new HashMap<String, SvgRenderService.Point>();
 		
 		for (final AnteroposteriorRelationship ar : ars) {
 			// 関連線の種別から矢印の付き方を決定

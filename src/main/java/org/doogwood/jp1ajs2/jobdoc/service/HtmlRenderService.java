@@ -17,8 +17,11 @@ import org.doogwood.jp1ajs2.jobdoc.Jobdoc;
 import org.doogwood.jp1ajs2.jobdoc.JobdocError;
 import org.doogwood.jp1ajs2.jobdoc.Messages;
 import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.jobdoc.TemplateFunctions;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.UnitType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -28,8 +31,12 @@ import org.thymeleaf.templateresolver.TemplateResolver;
  * ドキュメント化を担当するオブジェクト.
  * テンプレート・ファイルはクラスパス上から検索される。
  */
-public class HtmlWriter {
-	
+@Service
+public class HtmlRenderService {
+	@Autowired
+	private TraverseService trav;
+	@Autowired
+	private ExplicateService expl;
 	/**
 	 * テンプレート・ファイルのパスの接頭辞（ベース・ディレクトリのパス）.
 	 */
@@ -95,11 +102,11 @@ public class HtmlWriter {
 	 * @return ユニット種別統計
 	 */
 	private Map<String, UnitTypeStats> makeUnitTypeStats(final Unit target) {
-		final Map<String, UnitTypeStats> statsList = new LinkedHashMap<String, HtmlWriter.UnitTypeStats>();
+		final Map<String, UnitTypeStats> statsList = new LinkedHashMap<String, HtmlRenderService.UnitTypeStats>();
 		for (final UnitType t: UnitType.values()) {
 			statsList.put(t.getCode(), new UnitTypeStats(t));
 		}
-		for (final Unit u : ServiceProvider.getTraverser().makeFlattenedUnitList(target)) {
+		for (final Unit u : trav.makeFlattenedUnitList(target)) {
 			statsList.get(u.getType().getCode()).addCount();
 		}
 		return statsList;
@@ -152,8 +159,6 @@ public class HtmlWriter {
 	 * @param params パラメータ
 	 */
 	public void renderHtml(final Unit target, final TemplateEngine engine, final Parameters params) {
-		final Traverser trav = ServiceProvider.getTraverser();
-		
 		// ユニット名を使ってディレクトリを作成
 		final File baseDir = new File(params.getDestinationDirectory(), target.getName());
 		baseDir.mkdir();
@@ -163,7 +168,7 @@ public class HtmlWriter {
 		// コンテキストを初期化
 		final Context ctx = makeContext();
 		// 種々のテンプレート変数を追加
-		ctx.setVariable("tmplFunc", new TemplateFunctions(params, target));
+		ctx.setVariable("tmplFunc", new TemplateFunctions(params, target, expl));
 		ctx.setVariable("root", target);
 		ctx.setVariable("flattenedList", flattenedList);
 		ctx.setVariable("maxDepth", trav.measureMaxDepth(target));

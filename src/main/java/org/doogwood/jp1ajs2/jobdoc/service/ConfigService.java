@@ -15,11 +15,13 @@ import org.apache.commons.cli.ParseException;
 import org.doogwood.jp1ajs2.jobdoc.JobdocError;
 import org.doogwood.jp1ajs2.jobdoc.Messages;
 import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.springframework.stereotype.Service;
 
 /**
  * アプリケーションのコマンドライン・オプションの定義やパースを担当するオブジェクト.
  */
-public class Configurer {
+@Service
+public class ConfigService {
 	
 	private static final String OPTION_NAME_FOR_SOURCE_FILE_PATH = "s";
 	private static final String OPTION_NAME_FOR_DEST_DIR_PATH = "d";

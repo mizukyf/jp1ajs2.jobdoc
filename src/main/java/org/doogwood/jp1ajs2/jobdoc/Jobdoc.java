@@ -8,16 +8,20 @@ import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.doogwood.jp1ajs2.jobdoc.service.Configurer;
-import org.doogwood.jp1ajs2.jobdoc.service.HtmlWriter;
-import org.doogwood.jp1ajs2.jobdoc.service.Parser;
-import org.doogwood.jp1ajs2.jobdoc.service.ServiceProvider;
-import org.doogwood.jp1ajs2.jobdoc.service.SvgWriter;
-import org.doogwood.jp1ajs2.jobdoc.service.Traverser;
+import org.doogwood.jp1ajs2.jobdoc.service.ConfigService;
+import org.doogwood.jp1ajs2.jobdoc.service.HtmlRenderService;
+import org.doogwood.jp1ajs2.jobdoc.service.ParseService;
+import org.doogwood.jp1ajs2.jobdoc.service.SvgRenderService;
+import org.doogwood.jp1ajs2.jobdoc.service.TraverseService;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 
+@Component
 public class Jobdoc {
 	/**
 	 * アプリケーション名.
@@ -39,45 +43,77 @@ public class Jobdoc {
 	 * 異常終了時のExit Code.
 	 */
 	public static final int EXIT_CODE_ERROR = 2;
+	/**
+	 * このアプリケーションのエントリーポイント.
+	 * @param args コマンドライン引数
+	 */
+	public static void main(String[] args) {
+		final Class<Jobdoc> classMeta = Jobdoc.class;
+		final String packageName = classMeta.getPackage().getName();
+		final AnnotationConfigApplicationContext ctx = 
+				new AnnotationConfigApplicationContext(packageName);
+		int exitCode = EXIT_CODE_NORMAL;
+		try {
+			ctx.getBean(classMeta).execute(args);
+		} catch (final JobdocWarning e) {
+			e.printStackTrace();
+			exitCode = EXIT_CODE_WARNING;
+		} catch (final JobdocError e) {
+			e.printStackTrace();
+			exitCode = EXIT_CODE_ERROR;
+		} catch (final Exception e) {
+			e.printStackTrace();
+			exitCode = EXIT_CODE_ERROR;
+		} finally {
+			ctx.close();
+		}
+		System.exit(exitCode);
+	}
 	
 	/**
 	 * アプリケーション固有のロガー.
 	 * ログ出力設定は`log4j.properties`で行う。
 	 */
-	private final Logger logger = ServiceProvider.getLogger();
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 設定情報関連を担当するサービス・クラス.
 	 */
-	private Configurer config = ServiceProvider.getConfigurer();
+	@Autowired
+	private ConfigService config;
 	/**
 	 * ユニット定義パースを担当するサービス・クラス.
 	 */
-	private final Parser pars = ServiceProvider.getParser();
+	@Autowired
+	private ParseService pars;
 	/**
 	 * ユニット定義をもとに各種情報を収集するサービス・クラス.
 	 */
-	private final Traverser trav = ServiceProvider.getTraverser();
+	@Autowired
+	private TraverseService trav;
 	/**
 	 * ドキュメント化のHTML部分を担当するサービス・クラス.
 	 */
-	private final HtmlWriter html = ServiceProvider.getHtmlWriter();
+	@Autowired
+	private HtmlRenderService html;
 	/**
 	 * ドキュメント化のSVG部分を担当するサービス・クラス.
 	 */
-	private final SvgWriter svg = ServiceProvider.getSvgWriter();
+	@Autowired
+	private SvgRenderService svg;
 	
 	/**
 	 * アプリケーションの主処理を実行する.
 	 * @param args コマンドライン引数
+	 * @throws Exception 主処理実行中にエラーが発生した場合
 	 */
-	public void execute(final String[] args) {
+	public void execute(final String[] args) throws Exception {
 		// オプションの定義を行う
 		final Options ops = config.defineOptions();
 		// コマンドライン引数をチェック
 		if (config.checkIfRequireToPrintUsage(args)) {
 			// USAGEを表示してプログラムを終了する
 			config.printUsage(ops);
-			System.exit(EXIT_CODE_NORMAL);
+			return;
 		}
 		
 		try {
@@ -147,7 +183,7 @@ public class Jobdoc {
 				logger.info("すべての処理が完了しました.");
 				
 				// ドライ・ラン・モードで起動した場合はここで処理を中断
-				System.exit(EXIT_CODE_NORMAL);
+				return;
 			}
 
 			logger.info("テンプレート・エンジンを初期化します.");
@@ -174,36 +210,33 @@ public class Jobdoc {
 			logger.info("ドキュメント化したユニットの一覧を出力します.");
 			html.renderHtmlList(targetList, htmlEngine, params);
 			
-		} catch (final JobdocError e1) {
+		} catch (final JobdocError e) {
 			// 異常終了（アプリケーション・エラーの場合）
-			logger.error(Messages.APPLICATION_ERROR_HAS_OCCURED, e1);
-			if (e1.getMessage() != null) {
-				logger.warn(e1.getMessage());
+			logger.error(Messages.APPLICATION_ERROR_HAS_OCCURED, e);
+			if (e.getMessage() != null) {
+				logger.warn(e.getMessage());
 			}
-			e1.printStackTrace();
-			System.exit(EXIT_CODE_ERROR);
+			e.printStackTrace();
+			throw e;
 			
-		} catch (final JobdocWarning e2) {
+		} catch (final JobdocWarning e) {
 			// 警告終了
 			logger.warn(Messages.APPLICATION_WARNING_HAS_OCCURED);
-			if (e2.getMessage() != null) {
-				logger.warn(e2.getMessage());
+			if (e.getMessage() != null) {
+				logger.warn(e.getMessage());
 			}
-			System.exit(EXIT_CODE_WARNING);
+			throw e;
 			
-		} catch (final Exception e3) {
+		} catch (final Exception e) {
 			// 異常終了（想定外のエラーの場合）
-			logger.error(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e3);
-			if (e3.getMessage() != null) {
-				logger.warn(e3.getMessage());
+			logger.error(Messages.UNEXPECTED_ERROR_HAS_OCCURED, e);
+			if (e.getMessage() != null) {
+				logger.warn(e.getMessage());
 			}
-			e3.printStackTrace();
-			System.exit(EXIT_CODE_ERROR);
+			e.printStackTrace();
+			throw e;
 		}
 		
 		logger.info("すべての処理が完了しました.");
-		
-		// エラーも警告もなければ正常終了
-		System.exit(EXIT_CODE_NORMAL);
 	}	
 }

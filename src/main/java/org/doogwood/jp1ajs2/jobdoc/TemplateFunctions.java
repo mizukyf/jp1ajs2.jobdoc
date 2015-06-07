@@ -1,6 +1,6 @@
-package org.doogwood.jp1ajs2.jobdoc.service;
+package org.doogwood.jp1ajs2.jobdoc;
 
-import org.doogwood.jp1ajs2.jobdoc.Parameters;
+import org.doogwood.jp1ajs2.jobdoc.service.ExplicateService;
 import org.doogwood.jp1ajs2.unitdef.Param;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.UnitType;
@@ -9,13 +9,13 @@ import org.doogwood.jp1ajs2.unitdef.UnitType;
  * テンプレート内で使用するユーティリティ.
  */
 public final class TemplateFunctions {
-	private final Explicator expl;
+	private final ExplicateService expl;
 	private final Parameters params;
 	private final Unit root;
-	public TemplateFunctions(final Parameters params, final Unit root) {
+	public TemplateFunctions(final Parameters params, final Unit root, final ExplicateService expl) {
 		this.params = params;
-		this.expl = ServiceProvider.getExplicator();
 		this.root = root;
+		this.expl = expl;
 	}
 	/**
 	 * コマンドラインで指定されたパラメータを取得する.

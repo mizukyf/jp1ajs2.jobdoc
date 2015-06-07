@@ -8,11 +8,13 @@ import org.doogwood.jp1ajs2.jobdoc.Messages;
 import org.doogwood.jp1ajs2.jobdoc.Parameters;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.Units;
+import org.springframework.stereotype.Service;
 
 /**
  * ユニット定義ファイルのパース処理を担当するオブジェクト.
  */
-public class Parser {
+@Service
+public class ParseService {
 	
 	/**
 	 * ユニット定義ファイルをパースする.

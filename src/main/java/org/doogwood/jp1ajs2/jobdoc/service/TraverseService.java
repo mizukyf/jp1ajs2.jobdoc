@@ -12,11 +12,13 @@ import org.doogwood.jp1ajs2.unitdef.Params;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.Units;
 import org.doogwood.jp1ajs2.unitdef.util.Maybe;
+import org.springframework.stereotype.Service;
 
 /**
  * ユニット定義をもとに各種情報を収集するオブジェクト.
  */
-public class Traverser {
+@Service
+public class TraverseService {
 	
 	/**
 	 * ユニット・リストのキャッシュ.
