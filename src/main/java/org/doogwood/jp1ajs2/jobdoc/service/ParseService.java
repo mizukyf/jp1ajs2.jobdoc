@@ -2,6 +2,7 @@ package org.doogwood.jp1ajs2.jobdoc.service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.doogwood.jp1ajs2.jobdoc.JobdocError;
 import org.doogwood.jp1ajs2.jobdoc.Messages;
@@ -21,7 +22,7 @@ public class ParseService {
 	 * @param params パラメータ
 	 * @return ユニット定義オブジェクト
 	 */
-	public Unit parseSourceFile(Parameters params) {
+	public List<Unit> parseSourceFile(Parameters params) {
 		try {
 			return Units.fromStream(new FileInputStream(params.getSourceFile()),
 							params.getSourceFileCharset());

@@ -131,10 +131,10 @@ public class Jobdoc {
 			}
 			
 			logger.info("ユニット定義ファイルのパースを行います.");
-			final Unit root = pars.parseSourceFile(params);
+			final List<Unit> root = pars.parseSourceFile(params);
 			
 			logger.info("指定された条件にマッチするユニットを検索します.");
-			final Map<String,Unit> targets = trav.collectTargetUnits(root, params);
+			final Map<String,Unit> targets = trav.collectTargetUnits(root.get(0), params);
 			
 			logger.info("マッチするユニット数： {}", targets.size());
 			logger.info("検索の結果次のユニットが見つかりました：");

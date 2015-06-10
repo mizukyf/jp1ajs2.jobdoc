@@ -11,7 +11,7 @@ import org.doogwood.jp1ajs2.unitdef.MapSize;
 import org.doogwood.jp1ajs2.unitdef.Params;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.Units;
-import org.doogwood.jp1ajs2.unitdef.util.Maybe;
+import org.doogwood.jp1ajs2.unitdef.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -185,9 +185,9 @@ public class TraverseService {
 		// ユニットを総当りでチェック
 		for (final Unit u : flattenedList) {
 			// マップサイズ情報の取得を試みる
-			final Maybe<MapSize> o = Params.getMapSize(u);
+			final Optional<MapSize> o = Params.getMapSize(u);
 			// 当該パラメータが存在するかチェック
-			if (o.isOne()) {
+			if (o.isPresent()) {
 				// マップサイズ情報を取得する
 				final MapSize tmpMapSize = o.get();
 				// 面積を求める

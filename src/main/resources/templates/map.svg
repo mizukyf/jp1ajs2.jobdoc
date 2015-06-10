@@ -21,15 +21,15 @@
     <g th:each="el : ${elements}">
         <!--/*/ <th:block th:if="${tmplFunc.isViewable(el.unit)}"> /*/-->
         <a xlink:href="#" th:attr="xlink-href=|${tmplFunc.createDetailPathFromMap(el.unit)}|">
-        <g th:if="${el.unit.getParams('sz').isEmpty()}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
+        <g th:if="${el.unit.getParams('sz').isNotPresent()}" id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
             <circle fill="#fff" stroke="#000" stroke-width="2" r="40.0" cx="40.0" cy="40.0"/>
             <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
                 style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                  th:text="${el.unit.name}">UNIT_NAME_XXXX</text>
-            <!--/*/ <th:block th:unless="${el.unit.comment.isEmpty()}"> /*/-->
+            <!--/*/ <th:block th:unless="${el.unit.comment.isNotPresent()}"> /*/-->
             <text x="40" y="56" font-size="10" dominant-baseline="middle" text-anchor="middle"
-                th:unless="${el.unit.comment.isEmpty()}" th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"
+                th:unless="${el.unit.comment.isNotPresent()}" th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"
                 style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                 th:text="${ln}" th:attr="y=|${iterStat.index * 12 + 56}|">
                 コメント
@@ -41,7 +41,7 @@
                  dominant-baseline="middle" text-anchor="middle" font-weight="bold">R</text>
             <!--/*/ </th:block> /*/-->
         </g>
-        <g th:if="${not el.unit.getParams('sz').isEmpty()}"
+        <g th:if="${not el.unit.getParams('sz').isNotPresent()}"
            id="UNIT_NAME_XXXX" transform="translate(20 20)"
            th:id="${el.unit.name}" th:attr="transform=|translate(20 20) translate(${el.x * 120} ${el.y * 120})|">
             <line y2="64.0" stroke-width="2.0" x1="40.0" x2="16.0" stroke="#000" y1="16.0"/>
@@ -53,7 +53,7 @@
             <text x="40.0" y="40.0" font-size="12.0" dominant-baseline="middle" text-anchor="middle" font-weight="bold"
                 style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                 th:text="${el.unit.name}">UNIT_NAME_XXXX</text>
-            <!--/*/ <th:block th:unless="${el.unit.comment.isEmpty()}"> /*/-->
+            <!--/*/ <th:block th:unless="${el.unit.comment.isNotPresent()}"> /*/-->
             <text x="40" y="56" font-size="10" dominant-baseline="middle" text-anchor="middle"
                 style="text-shadow:1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;"
                 th:each="ln,iterStat : ${#strings.arraySplit(el.unit.comment.get(),' ')}"

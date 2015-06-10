@@ -37,7 +37,7 @@ td
 		<tbody>
 			<tr th:each="unit : ${list}">
 				<td><a th:href="${unit.name} + '/index.html'" th:text="${unit.name}">(unit name)</a></td>
-				<td th:text="${unit.comment.isEmpty()} ? '(指定なし)' : ${unit.comment.get()}">(unit comment)</td>
+				<td th:text="${unit.comment.isNotPresent()} ? '(指定なし)' : ${unit.comment.get()}">(unit comment)</td>
 			</tr>
 		</tbody>
 	</table>

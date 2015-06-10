@@ -25,7 +25,7 @@ import org.doogwood.jp1ajs2.unitdef.MapSize;
 import org.doogwood.jp1ajs2.unitdef.Params;
 import org.doogwood.jp1ajs2.unitdef.Unit;
 import org.doogwood.jp1ajs2.unitdef.UnitConnectionType;
-import org.doogwood.jp1ajs2.unitdef.util.Maybe;
+import org.doogwood.jp1ajs2.unitdef.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -107,9 +107,9 @@ public class SvgRenderService {
 		
 		for (final Unit u : trav.makeFlattenedUnitList(root)) {
 			// マップサイズ情報を取得
-			final Maybe<MapSize> size = Params.getMapSize(u);
+			final Optional<MapSize> size = Params.getMapSize(u);
 
-			if (size.isNothing()) {
+			if (size.isNotPresent()) {
 				// マップサイズを持たないものはレンダリング対象外
 				continue;
 			}
@@ -120,7 +120,7 @@ public class SvgRenderService {
 			
 			// `el`と`ar`の情報をテンプレート変数として登録
 			final List<Element> els = Params.getElements(u);
-			final List<ArrowLine> als = makeArrowLines(els, Params.getAnteroposteriorRelationships(u).getList());
+			final List<ArrowLine> als = makeArrowLines(els, Params.getAnteroposteriorRelationships(u));
 			ctx.setVariable("elements", els);
 			ctx.setVariable("arrowLines", als);
 			
